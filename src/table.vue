@@ -390,6 +390,7 @@ export default {
         }
     },
     mounted(){
+        console.log('mounted666: ');
         this.doLayout();
         window.addEventListener('resize',this.doLayout);
         window.addEventListener('scroll',this.winScroll, false);
