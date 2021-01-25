@@ -484,8 +484,9 @@ export default {
         data: {
             handler: function (value) {
                 this.doLayout();
-                this.updateTable();
-            },
+                this.reSetItemHeight();
+                this.$nextTick(this.updateTable);
+                    },
             deep: true,
         },
         dataList: {
@@ -573,8 +574,7 @@ export default {
             setTimeout(() => {
                 const itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
                 this.itemHeight = itemHeight;
-                console.log('成功', this.itemHeight, this.data);
-
+                console.log('成功', document.getElementsByClassName('virtualItem'));
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
                 });
