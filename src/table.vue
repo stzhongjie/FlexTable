@@ -572,9 +572,10 @@ export default {
     methods: {
         reSetItemHeight() {
             setTimeout(() => {
-                console.log('成功', document.getElementsByClassName('virtualItem'));
                 const itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
                 this.itemHeight = itemHeight;
+                console.log('成功', this.itemHeight, this.data);
+
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
                 });
