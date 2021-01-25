@@ -482,12 +482,11 @@ export default {
     },
     watch: {
         data: {
-            handler: function () {
-                // this.initData();
+            handler: function (value) {
                 this.doLayout();
+                this.updateTable();
             },
             deep: true,
-            immediate: true,
         },
         dataList: {
             handler(value) {
