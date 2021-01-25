@@ -5,10 +5,10 @@
         :style="style"
         @mouseleave="mouseleave"
         >
-        <template v-for="item in rowSpanList">
+        <div v-for="(item, index) in rowSpanList" :key="index">
             <div
-                class="flex-table-tr flex-table-span"
-                :style="item.style">
+                class="flex-table-tr flex-table-span virtualItem"
+                :style="[item.style, `transform: translateY(${row.top}px)`]">
                 <table-tr
                     row-span
                     :column-index="item.columnIndex"
@@ -26,10 +26,10 @@
                     @on-toggle-expand="toggleExpand"
                 ></table-tr>
             </div>
-        </template>
+        </div>
 
-        <div class="flex-table-tr" v-if="data.length">
-            <template v-for="(row, index) in data">
+        <div class="flex-table-tr" v-if="data.length" :style="scrollerStyle">
+            <div v-for="(row, index) in data" :key="index" class="virtualItem" :style="`transform: translateY(${row.top}px)`">
                 <table-tr
                     :key="index"
                     :row="row"
@@ -51,7 +51,7 @@
                         :index="index"
                         :render="expandRender"></Expand>
                 </div>
-            </template>
+            </div>
         </div>
         <div v-else>
             <div class="flex-table-col flex-table-tip">{{!onlyFixed ? noData : '&nbsp;'}}</div>
@@ -74,6 +74,9 @@ export default {
         data: {
             type: Array
         },
+        // virtualScroll: {
+        //     type: Object,
+        // },
         columns: {
             type: Array
         },
@@ -106,11 +109,15 @@ export default {
         },
         spanMethod: {
             type: Function
+        },
+
+        scrollerStyle: {
+            type: Object
         }
     },
     computed: {
         style() {
-            return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            return {'height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
         },
         expandRender() {
             let render = noop;
@@ -123,6 +130,7 @@ export default {
                     return true;
                 }
             });
+
             return render;
         }
     },
@@ -130,8 +138,11 @@ export default {
         scrollTop(scrollTop) {
             this.$el.scrollTop = scrollTop;
         },
-        data() {
-            this.updateRowList();
+        data:{
+            handler() {
+                this.updateRowList();
+            },
+            deep: true,
         }
     },
     data(){
@@ -161,7 +172,6 @@ export default {
             if (!this.spanMethod) {
                 return list;
             }
-
             this.data.forEach((row, rowIndex) => {
                 this.columns.forEach((column, columnIndex) => {
                     const setting = this.spanMethod({
@@ -224,7 +234,17 @@ export default {
     },
     mounted() {
         this.updateRowList();
-    }
+    },
 }
 </script>
-
+<style lang="less" scoped>
+.virtualItem{
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    width: 100%;
+}
+.virtualItem:nth-child(odd) {
+    background: #f9f9f9;
+}
+</style>
