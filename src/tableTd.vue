@@ -87,7 +87,7 @@ export default {
     watch: {
         'row._expanded'(val) {
             this.expandOpen = val;
-        },
+        }
     },
     computed: {
         isHidden() {
@@ -107,7 +107,6 @@ export default {
     },
     created(){
         // renderType
-
         if (this.column.type === 'selection') {
             this.renderType = 'selection';
         } else if(this.column.type === 'expand'){

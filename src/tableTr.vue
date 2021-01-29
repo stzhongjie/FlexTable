@@ -16,7 +16,6 @@
             @on-toggle-select="toggleSelect"
             @on-toggle-expand="toggleExpand"
         ></table-td>
-        <!-- <div v-for="(column, i) in columns" :key="i">{{column.title}}</div> -->
     </div>
 </template>
 <script>
@@ -127,9 +126,3 @@ export default {
     }
 }
 </script>
-<style lang="less" scoped>
-.flex-table-hover{
-    background: #ebf7ff;
-}
-
-</style>

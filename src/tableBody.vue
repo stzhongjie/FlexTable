@@ -7,8 +7,8 @@
         >
         <div v-for="(item, index) in rowSpanList" :key="index">
             <div
-                class="flex-table-tr flex-table-span virtualItem"
-                :style="[item.style, `transform: translateY(${row.top}px)`]">
+                :class="`flex-table-tr flex-table-span ${virtualScroll ? 'virtualItem' : ''}`"
+                :style="[item.style, virtualScroll ? `transform: translateY(${row.top}px)` : '']">
                 <table-tr
                     row-span
                     :column-index="item.columnIndex"
@@ -29,7 +29,7 @@
         </div>
 
         <div class="flex-table-tr" v-if="data.length" :style="scrollerStyle">
-            <div v-for="(row, index) in data" :key="index" class="virtualItem" :style="`transform: translateY(${row.top}px)`">
+            <div v-for="(row, index) in data" :key="index" :class="`${virtualScroll ? 'virtualItem' : ''}`" :style="virtualScroll ? `transform: translateY(${row.top}px)` : ''">
                 <table-tr
                     :key="index"
                     :row="row"
@@ -74,9 +74,9 @@ export default {
         data: {
             type: Array
         },
-        // virtualScroll: {
-        //     type: Object,
-        // },
+        virtualScroll: {
+            type: Number,
+        },
         columns: {
             type: Array
         },
@@ -110,7 +110,6 @@ export default {
         spanMethod: {
             type: Function
         },
-
         scrollerStyle: {
             type: Object
         }
@@ -130,7 +129,6 @@ export default {
                     return true;
                 }
             });
-
             return render;
         }
     },
@@ -138,11 +136,8 @@ export default {
         scrollTop(scrollTop) {
             this.$el.scrollTop = scrollTop;
         },
-        data:{
-            handler() {
-                this.updateRowList();
-            },
-            deep: true,
+        data() {
+            this.updateRowList();
         }
     },
     data(){
@@ -172,6 +167,7 @@ export default {
             if (!this.spanMethod) {
                 return list;
             }
+
             this.data.forEach((row, rowIndex) => {
                 this.columns.forEach((column, columnIndex) => {
                     const setting = this.spanMethod({
@@ -234,7 +230,7 @@ export default {
     },
     mounted() {
         this.updateRowList();
-    },
+    }
 }
 </script>
 <style lang="less" scoped>
