@@ -437,6 +437,7 @@ export default {
         if(this.virtualScroll){
             this.doLayout();
             this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
+            console.log('this.maxHeight: ', this.maxHeight, this.virtualScroll, this.itemHeight);
         }
     },
     mounted(){
@@ -553,7 +554,6 @@ export default {
             } else {
                 this.tableHeight = this.maxHeight;
             }
-
             setTimeout(() => {
                 const itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
                 this.itemHeight = itemHeight;
@@ -651,7 +651,7 @@ export default {
         }, 20),
         updateHoverIndex: debounce(function(index) {
             this.hoverIndex = index;
-        }, 100),
+        }, 10),
         handleMousewheel(event) {
             const normalized = normalizeWheel(event);
             if (Math.abs(normalized.spinY) > 0) {

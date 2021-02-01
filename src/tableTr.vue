@@ -1,9 +1,14 @@
 <template>
-    <div class="flex-table-row" :class="{'flex-table-hover': isHover}" :style="{ 'height': height }" @mouseenter="mouseenter">
+    <div
+        class="flex-table-row"
+        :class="{ 'flex-table-hover': isHover }"
+        :style="{ height: height }"
+        @mouseenter="mouseenter"
+    >
         <table-td
             v-for="(column, i) in columns"
-            v-if="!rowSpan || (rowSpan && i=== columnIndex)"
-            :key="column.key + '_'+ i + '_' + rowIndex"
+            v-if="!rowSpan || (rowSpan && i === columnIndex)"
+            :key="column.key + '_' + i + '_' + rowIndex"
             :column="column"
             :index="i"
             :cal-width="calWidth"
@@ -24,53 +29,53 @@ import Mixin from './mixin.js';
 
 export default {
     name: 'TableTr',
-    components:{
+    components: {
         tableTd,
     },
     mixins: [Mixin],
     props: {
         className: {
-            type: String | Object
+            type: String | Object,
         },
         row: {
-            type: Object
+            type: Object,
         },
         rowIndex: {
-            type: Number
+            type: Number,
         },
         columns: {
-            type: Array
+            type: Array,
         },
         onlyFixed: {
-            type: String
+            type: String,
         },
         rowHeight: {
             type: Number,
         },
         hoverIndex: {
-            type: Number | undefined
+            type: Number | undefined,
         },
         selectedClass: {
             type: String,
-            default: ''
+            default: '',
         },
         rowSpan: {
             type: Boolean,
-            default: false
+            default: false,
         },
         columnIndex: {
             type: Number,
-            default: 0
+            default: 0,
         },
         spanMethod: {
-            type: Function
+            type: Function,
         },
         rowSpanColumns: {
             type: Array,
-            default: function() {
+            default: function () {
                 return [];
-            }
-        }
+            },
+        },
     },
     mounted() {
         this.onRowHeightChange();
@@ -105,7 +110,7 @@ export default {
                 this.owner.onRowHeightChange({
                     rowIndex: this.rowIndex,
                     height: this.$el.offsetHeight,
-                })
+                });
             }
         },
         mouseenter() {
@@ -115,14 +120,19 @@ export default {
             return this.$parent.$parent.rowClassName(this.row, _index);
         },
         selectedCls(row) {
-            return row._isChecked ? this.selectedClass : ''
+            return row._isChecked ? this.selectedClass : '';
         },
         tdClassName() {
-            return [
-                this.selectedCls(this.row),
-                this.rowClsName(this.rowIndex),
-            ]
+            return [this.selectedCls(this.row), this.rowClsName(this.rowIndex)];
         },
-    }
-}
+        mounted() {
+            console.log('mounted: ');
+        },
+    },
+};
 </script>
+<style lang="less" scoped>
+.flex-table-hover {
+    background-color: #ebf7ff;
+}
+</style>

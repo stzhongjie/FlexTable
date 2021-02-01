@@ -10,6 +10,7 @@
             :sum="sum"
             :height="300"
             @on-sort-change="onSortChange"
+            :virtualScroll="10"
         ></flex-table>
     </div>
 </template>

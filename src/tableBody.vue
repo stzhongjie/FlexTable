@@ -246,19 +246,14 @@ export default {
     left: 0;
     width: 100%;
     &:hover{
-        box-shadow:0 2px 2px #e8e8e8;
         background-color: #ebf7ff;
     }
 }
 
 .commonItem{
     &:hover{
-        box-shadow:0 2px 2px #e8e8e8;
         background-color: #ebf7ff;
     }
-}
-.flex-table-row{
-    // border-bottom: 1px solid #e9eaec !important;
 }
 
 </style>
