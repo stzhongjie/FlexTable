@@ -434,11 +434,11 @@ export default {
         },
     },
     created() {
-        if(this.virtualScroll){
+        // if(this.virtualScroll){
             this.doLayout();
             this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
             console.log('this.maxHeight: ', this.maxHeight, this.virtualScroll, this.itemHeight);
-        }
+        // }
     },
     mounted(){
         this.doLayout();
