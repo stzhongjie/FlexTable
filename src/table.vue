@@ -173,9 +173,9 @@
             </div>
         </div>
     </div>
-    <!-- /flex-table-fixed-head -->
+    <!-- v-if="showScrollBar"-->
     <tableScrollBar
-        v-if="showScrollBar"
+        
         :body-h="bodyH"
         :header-h="headerH"
         :max-height="maxHeight"
@@ -346,6 +346,7 @@ export default {
                 column: {},
                 event: null
             },
+            tableHeight: 0,
             // 虚拟滚动变量
             itemHeight: 37,
             startIndex: -1,
@@ -418,7 +419,7 @@ export default {
         maxIndex() {
             return this.totalSize - this.poolSize;
         },
-        totalHeight() {
+        totalHeight() {       
             return this.totalSize * this.itemHeight;
         },
         scrollerStyle() {
@@ -435,9 +436,7 @@ export default {
     created() {
         if(this.virtualScroll){
             this.doLayout();
-            this.maxHeight = this.virtualScroll
-            ? this.virtualScroll * this.itemHeight
-            : 0;
+            this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
         }
     },
     mounted(){
@@ -480,8 +479,10 @@ export default {
                 }
             },
         },
-        height: function(val){
-            this.calHeight();
+        height: {
+            handler(val) {
+                this.calHeight();
+            },
         },
         columns: {
             handler: function(arr) {
@@ -546,6 +547,13 @@ export default {
     },
     methods:{
         reSetItemHeight() {
+            // 这里给 height 赋值是为了出现滚动条
+            if(this.height){
+                this.tableHeight = this.height
+            } else {
+                this.tableHeight = this.maxHeight;
+            }
+
             setTimeout(() => {
                 const itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
                 this.itemHeight = itemHeight;
@@ -860,7 +868,7 @@ export default {
         },
         calHeight() {
             requestAnimationFrame(() => {
-                if (!this.height) { return; }
+                if (!this.tableHeight) { return; }
                 const $refs = this.$refs;
                 const $tableFoot = $refs.tableFoot;
                 const $tableBody = $refs.tableBody;
@@ -872,7 +880,9 @@ export default {
                 this.headerH = headerH;
                 this.footH = footH;
                 this.bodyH = bodyH;
-                this.maxHeight = this.height - headerH - footH;
+                if(!this.virtualScroll){
+                    this.maxHeight = this.tableHeight - headerH - footH;
+                }
             });
         },
         getMinWidth(col) {

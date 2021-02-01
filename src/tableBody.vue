@@ -7,7 +7,7 @@
         >
         <div v-for="(item, index) in rowSpanList" :key="index">
             <div
-                :class="`flex-table-tr flex-table-span ${virtualScroll ? 'virtualItem' : ''}`"
+                :class="`flex-table-tr flex-table-span ${virtualScroll ? 'virtualItem' : 'commonItem'}`"
                 :style="[item.style, virtualScroll ? `transform: translateY(${row.top}px)` : '']">
                 <table-tr
                     row-span
@@ -29,7 +29,7 @@
         </div>
 
         <div class="flex-table-tr" v-if="data.length" :style="scrollerStyle">
-            <div v-for="(row, index) in data" :key="index" :class="`${virtualScroll ? 'virtualItem' : ''}`" :style="virtualScroll ? `transform: translateY(${row.top}px)` : ''">
+            <div v-for="(row, index) in data" :key="index" :class="`${virtualScroll ? 'virtualItem' : 'commonItem'}`" :style="virtualScroll ? `transform: translateY(${row.top}px)` : ''">
                 <table-tr
                     :key="index"
                     :row="row"
@@ -234,13 +234,31 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.virtualItem:nth-child(odd) {
+    background: #f9f9f9;
+}
+.commonItem:nth-child(odd) {
+    background: #f9f9f9;
+}
 .virtualItem{
     overflow: hidden;
     position: absolute;
     left: 0;
     width: 100%;
+    &:hover{
+        box-shadow:0 2px 2px #e8e8e8;
+        background-color: #ebf7ff;
+    }
 }
-.virtualItem:nth-child(odd) {
-    background: #f9f9f9;
+
+.commonItem{
+    &:hover{
+        box-shadow:0 2px 2px #e8e8e8;
+        background-color: #ebf7ff;
+    }
 }
+.flex-table-row{
+    // border-bottom: 1px solid #e9eaec !important;
+}
+
 </style>
