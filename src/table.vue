@@ -419,8 +419,11 @@ export default {
         maxIndex() {
             return this.totalSize - this.poolSize;
         },
-        totalHeight() {       
+        totalHeight() {      
+            console.log('this.totalSize * this.itemHeight: ', this.totalSize, this.itemHeight);
+
             return this.totalSize * this.itemHeight;
+
         },
         scrollerStyle() {
             const { totalHeight } = this;
@@ -434,11 +437,10 @@ export default {
         },
     },
     created() {
-        // if(this.virtualScroll){
+        if(this.virtualScroll){
             this.doLayout();
             this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
-            console.log('this.maxHeight: ', this.maxHeight, this.virtualScroll, this.itemHeight);
-        // }
+        }
     },
     mounted(){
         this.doLayout();
@@ -510,6 +512,7 @@ export default {
                 this.$nextTick(() => {
                     this.hasFixedLeft = this.computedFixedLeft();
                     this.hasFixedRight = this.computedFixedRight();
+                    console.log('1111', this.hasFixedLeft, this.hasFixedRight)
                 });
                 this.$emit('update:columns', arr);
             },
