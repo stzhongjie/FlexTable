@@ -186,7 +186,7 @@
         @mouseenter.native="scrollBarOver"
         @mouseleave.native="scrollBarLeave"
     ></tableScrollBar>
-    <!-- /Y轴固定滚动条 -->
+
     </div>
 </template>
 <style lang="less">
@@ -208,6 +208,7 @@ import { MIN_WIDTH } from './data';
 const prefixCls = 'flex-table';
 
 let tableIdSeed = 1;
+
 export default {
     name: "flexTable",
     components: {
@@ -435,12 +436,14 @@ export default {
                 overflow: 'hidden',
             };
         },
+
+        
     },
     created() {
         if(this.virtualScroll){
             this.doLayout();
-            this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
         }
+        this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
     },
     mounted(){
         this.doLayout();
@@ -450,9 +453,10 @@ export default {
             window.addEventListener('mouseup', this.onColResizeEnd);
             this.$el.addEventListener('mousemove', this.onColResizeMove);
         }
-        if(this.virtualScroll){
-            this.reSetItemHeight();
-        }
+        // if(this.virtualScroll){
+        //     this.reSetItemHeight();
+        // }
+        this.reSetItemHeight();
     },
     destroyed() {
         this.requestId && cancelAnimationFrame(this.requestId);
@@ -559,6 +563,7 @@ export default {
             }
             setTimeout(() => {
                 const itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
+                console.log('itemHeight: ', itemHeight);
                 this.itemHeight = itemHeight;
                 this.syncScroll({
                     target: { scrollTop: itemHeight },

@@ -1,8 +1,7 @@
 <template>
     <div>
         <h3>固定列</h3>
-        <p>左右固定列 <a href="https://github.com/tm-fe/FlexTable/blob/master/examples/features/fixedLeft.vue">source code</a></p>
-        
+        <p >左右固定列 <a href="https://github.com/tm-fe/FlexTable/blob/master/examples/features/fixedLeft.vue">source code</a></p>
         <flex-table
             :loading="loading" 
             :columns="columns" 
@@ -23,7 +22,7 @@ for(let i=0;i<100;i++){
         name: 'John Brown',
         age: 18,
         hegith: '178',
-        address: 'New York No. 1 Lake Park',
+        address: 'New York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake Park',
         date: '2016-10-03',
     };
     aTestList.push(oTestData);
