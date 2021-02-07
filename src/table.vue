@@ -421,14 +421,11 @@ export default {
             return this.totalSize - this.poolSize;
         },
         totalHeight() {      
-            console.log('this.totalSize * this.itemHeight: ', this.totalSize, this.itemHeight);
-
             return this.totalSize * this.itemHeight;
 
         },
         scrollerStyle() {
             const { totalHeight } = this;
-            console.log('totalHeight ', totalHeight);
             return {
                 position: 'relative',
                 width: 'auto',
@@ -892,6 +889,7 @@ export default {
                 this.bodyH = bodyH;
                 if(!this.virtualScroll){
                     this.maxHeight = this.tableHeight - headerH - footH;
+                    console.log('this.maxHeight: ', this.maxHeight);
                 }
             });
         },
