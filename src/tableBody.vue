@@ -116,8 +116,7 @@ export default {
     },
     computed: {
         style() {
-            return {'height': `auto`};
-            // return {'height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            return {'height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
         },
         expandRender() {
             let render = noop;

@@ -451,7 +451,7 @@ export default {
             window.addEventListener('mouseup', this.onColResizeEnd);
             this.$el.addEventListener('mousemove', this.onColResizeMove);
         }
-        this.reSetItemHeight();
+        // this.reSetItemHeight();
     },
     destroyed() {
         this.requestId && cancelAnimationFrame(this.requestId);
@@ -461,12 +461,13 @@ export default {
             handler: function() {
                 if(this.virtualScroll){
                     this.doLayout();
-                    this.reSetItemHeight();
+                    // this.reSetItemHeight();
                     this.$nextTick(this.updateTable);
                 } else {
                     this.initData();
                     this.doLayout();
                 }
+                this.reSetItemHeight();
             },
             deep: true,
             immediate: true,
@@ -562,7 +563,7 @@ export default {
                 } else {
                     itemHeight = document.getElementsByClassName('commonItem').length !== 0 ? document.getElementsByClassName('commonItem')[0].clientHeight : 37;
                 }
-                console.log('itemHeight: ', itemHeight);
+                console.log('itemHeight: ', document.getElementsByClassName('commonItem'),  itemHeight);
                 this.itemHeight = itemHeight;
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
