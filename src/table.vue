@@ -395,8 +395,9 @@ export default {
             }, 0);
         },
         showScrollBar: function() {
-            console.log('this.bodyH: ', this.bodyH, this.maxHeight);
-
+            if(this.virtualScroll){
+                return this.totalHeight > this.maxHeight;
+            }
             return this.bodyH > this.maxHeight;
         },
         getFixedHeadClass: function() {
@@ -423,6 +424,8 @@ export default {
             return this.totalSize - this.poolSize;
         },
         totalHeight() {      
+            console.log('this.itemHeight: ', this.itemHeight);
+
             return this.totalSize * this.itemHeight;
 
         },
@@ -438,7 +441,7 @@ export default {
         },  
     },
     created() {
-        this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
+        // this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
     },
     mounted(){
         this.doLayout();
@@ -457,12 +460,17 @@ export default {
             handler: function() {
                 if(this.virtualScroll){
                     this.doLayout();
-                    this.$nextTick(this.updateTable);
+                    this.$nextTick(() => {
+                        this.updateTable();
+                    });
                 } else {
                     this.initData();
                     this.doLayout();
                 }
-                this.reSetItemHeight();
+                setTimeout(() => {
+                    this.reSetItemHeight();
+                }, 0)
+
             },
             deep: true,
             immediate: true,
@@ -546,10 +554,12 @@ export default {
     methods:{
         reSetItemHeight() {
             // 这里给 height 赋值是为了出现滚动条
-            // if(this.height){
-            //     this.tableHeight = this.height
-            // } else {
-            //     this.tableHeight = this.maxHeight;
+            // if(this.virtualScroll){
+            //     if(this.height){
+            //         this.tableHeight = this.height
+            //     } else {
+            //         this.tableHeight = this.maxHeight;
+            //     }
             // }
             setTimeout(() => {
                 let itemHeight = 0;
@@ -558,8 +568,9 @@ export default {
                 } else {
                     itemHeight = document.getElementsByClassName('commonItem').length !== 0 ? document.getElementsByClassName('commonItem')[0].clientHeight : 37;
                 }
-                console.log('itemHeight: ', document.getElementsByClassName('commonItem'),  itemHeight);
                 this.itemHeight = itemHeight;
+                this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
+                    console.log('this.itemHeight: ', this.virtualScroll, this.itemHeight);
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
                 });
@@ -648,7 +659,9 @@ export default {
             this.scrollTop = scrollTop;
             if(this.virtualScroll){
                 this.requestId = requestAnimationFrame(() => {
-                    this.updateTable();
+                    this.$nextTick(() => {
+                        this.updateTable();
+                    });
                 });
             }
         }, 20),

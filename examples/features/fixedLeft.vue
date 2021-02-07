@@ -16,7 +16,6 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-setTimeout(() => {
     for(let i=0;i<5;i++){
     const oTestData = {
         name: 'John Brown',
@@ -27,7 +26,6 @@ setTimeout(() => {
     };
     aTestList.push(oTestData);
 }
-}, 1);
 
 console.time('fixed')
 export default {
