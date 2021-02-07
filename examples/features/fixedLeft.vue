@@ -7,9 +7,8 @@
             :columns="columns" 
             :data="list"
             :sum="sum"
-            :height="300"
-            @on-sort-change="onSortChange"
 
+            @on-sort-change="onSortChange"
         ></flex-table>
     </div>
 </template>
@@ -17,7 +16,7 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-for(let i=0;i<100;i++){
+for(let i=0;i<15;i++){
     const oTestData = {
         name: 'John Brown',
         age: 18,

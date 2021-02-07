@@ -428,6 +428,7 @@ export default {
         },
         scrollerStyle() {
             const { totalHeight } = this;
+            console.log('totalHeight ', totalHeight);
             return {
                 position: 'relative',
                 width: 'auto',
@@ -440,9 +441,9 @@ export default {
         
     },
     created() {
-        if(this.virtualScroll){
-            this.doLayout();
-        }
+        // if(this.virtualScroll){
+        //     this.doLayout();
+        // }
         this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
     },
     mounted(){
@@ -453,9 +454,6 @@ export default {
             window.addEventListener('mouseup', this.onColResizeEnd);
             this.$el.addEventListener('mousemove', this.onColResizeMove);
         }
-        // if(this.virtualScroll){
-        //     this.reSetItemHeight();
-        // }
         this.reSetItemHeight();
     },
     destroyed() {
@@ -516,7 +514,6 @@ export default {
                 this.$nextTick(() => {
                     this.hasFixedLeft = this.computedFixedLeft();
                     this.hasFixedRight = this.computedFixedRight();
-                    console.log('1111', this.hasFixedLeft, this.hasFixedRight)
                 });
                 this.$emit('update:columns', arr);
             },
@@ -562,7 +559,12 @@ export default {
                 this.tableHeight = this.maxHeight;
             }
             setTimeout(() => {
-                const itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
+                let itemHeight = 0;
+                if(this.virtualScroll){
+                    itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
+                } else {
+                    itemHeight = document.getElementsByClassName('commonItem').length !== 0 ? document.getElementsByClassName('commonItem')[0].clientHeight : 37;
+                }
                 console.log('itemHeight: ', itemHeight);
                 this.itemHeight = itemHeight;
                 this.syncScroll({
