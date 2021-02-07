@@ -17,7 +17,7 @@
 
 const aTestList = [];
 setTimeout(() => {
-    for(let i=0;i<25;i++){
+    for(let i=0;i<5;i++){
     const oTestData = {
         name: 'John Brown',
         age: 18,
@@ -27,7 +27,7 @@ setTimeout(() => {
     };
     aTestList.push(oTestData);
 }
-}, 1000);
+}, 1);
 
 console.time('fixed')
 export default {

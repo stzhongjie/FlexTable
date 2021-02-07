@@ -175,7 +175,7 @@
     </div>
     <!-- v-if="showScrollBar"-->
     <tableScrollBar
-        
+        v-if="showScrollBar"
         :body-h="bodyH"
         :header-h="headerH"
         :max-height="maxHeight"
@@ -395,6 +395,8 @@ export default {
             }, 0);
         },
         showScrollBar: function() {
+            console.log('this.bodyH: ', this.bodyH, this.maxHeight);
+
             return this.bodyH > this.maxHeight;
         },
         getFixedHeadClass: function() {
@@ -433,14 +435,9 @@ export default {
                 maxHeight: totalHeight + 'px',
                 overflow: 'hidden',
             };
-        },
-
-        
+        },  
     },
     created() {
-        // if(this.virtualScroll){
-        //     this.doLayout();
-        // }
         this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
     },
     mounted(){
@@ -451,7 +448,6 @@ export default {
             window.addEventListener('mouseup', this.onColResizeEnd);
             this.$el.addEventListener('mousemove', this.onColResizeMove);
         }
-        // this.reSetItemHeight();
     },
     destroyed() {
         this.requestId && cancelAnimationFrame(this.requestId);
@@ -461,7 +457,6 @@ export default {
             handler: function() {
                 if(this.virtualScroll){
                     this.doLayout();
-                    // this.reSetItemHeight();
                     this.$nextTick(this.updateTable);
                 } else {
                     this.initData();
@@ -551,11 +546,11 @@ export default {
     methods:{
         reSetItemHeight() {
             // 这里给 height 赋值是为了出现滚动条
-            if(this.height){
-                this.tableHeight = this.height
-            } else {
-                this.tableHeight = this.maxHeight;
-            }
+            // if(this.height){
+            //     this.tableHeight = this.height
+            // } else {
+            //     this.tableHeight = this.maxHeight;
+            // }
             setTimeout(() => {
                 let itemHeight = 0;
                 if(this.virtualScroll){
