@@ -569,8 +569,8 @@ export default {
                     itemHeight = document.getElementsByClassName('commonItem').length !== 0 ? document.getElementsByClassName('commonItem')[0].clientHeight : 37;
                 }
                 this.itemHeight = itemHeight;
-                this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : null;
-                    console.log('this.itemHeight: ', this.virtualScroll, this.itemHeight);
+                this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
+                console.log('this.itemHeight: ', itemHeight, document.getElementsByClassName('commonItem'));
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
                 });
