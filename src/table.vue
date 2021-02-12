@@ -570,9 +570,9 @@ export default {
                 const virtualItemArr = document.getElementsByClassName('virtualItem'); // 虚拟滚动dom
                 const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
                 if(this.virtualScroll){
-                    itemHeight = virtualItemArr.length !== 0 && virtualItemArr[0].clientHeight !== 0 ? virtualItemArr[0].clientHeight : 37;
+                    itemHeight = virtualItemArr.length !== 0 && virtualItemArr[1].clientHeight !== 0 ? virtualItemArr[1].clientHeight : 37;
                 } else {
-                    itemHeight = commonItemArr.length !== 0 && commonItemArr[0].clientHeight !== 0 ? commonItemArr[0].clientHeight : 37;
+                    itemHeight = commonItemArr.length !== 0 && commonItemArr[1].clientHeight !== 0 ? commonItemArr[1].clientHeight : 37;
                 }
                 this.itemHeight = itemHeight;
                 this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
