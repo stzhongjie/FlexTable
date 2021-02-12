@@ -21,7 +21,7 @@
 
 
 const aTestList = [];
-for(let i=0;i<20;i++){
+for(let i=0;i<8;i++){
     const oTestData = {
         name: 'John Brown',
         age: 18,
@@ -31,6 +31,8 @@ for(let i=0;i<20;i++){
     };
     aTestList.push(oTestData);
 }
+
+
 
 export default {
     // components:{

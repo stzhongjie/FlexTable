@@ -464,12 +464,14 @@ export default {
                         this.updateTable();
                     });
                 } else {
-                    this.initData();
+                    console.log('进来')
                     this.doLayout();
+                    this.initData();
+
                 }
-                setTimeout(() => {
-                    this.reSetItemHeight();
-                }, 0)
+                // setTimeout(() => {
+                //     this.reSetItemHeight();
+                // }, 0)
 
             },
             deep: true,
@@ -484,6 +486,7 @@ export default {
                     });
                 }
             },
+            deep: true,
         },
         height: {
             handler(val) {
