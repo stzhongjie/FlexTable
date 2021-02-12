@@ -462,11 +462,13 @@ export default {
                     });
                 } else {
                     console.log('进来', this.data)
+                    // this.reSetItemHeight();
+
                     this.doLayout();
                     this.initData();
-                    this.$nextTick(() => {
+                    setTimeout(() => {
                         this.reSetItemHeight();
-                    });
+                    }, 2000)
                 }
 
             },
