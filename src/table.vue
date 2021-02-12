@@ -467,11 +467,10 @@ export default {
                     console.log('进来')
                     this.doLayout();
                     this.initData();
-
+                    setTimeout(() => {
+                        this.reSetItemHeight();
+                    }, 0)
                 }
-                // setTimeout(() => {
-                //     this.reSetItemHeight();
-                // }, 0)
 
             },
             deep: true,
