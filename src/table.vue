@@ -572,7 +572,7 @@ export default {
                 if(this.virtualScroll){
                     itemHeight = virtualItemArr.length !== 0 && virtualItemArr[0].clientHeight !== 0 ? virtualItemArr[0].clientHeight : 37;
                 } else {
-                    itemHeight = commonItemArr.length !== 0 && commonItemArr.clientHeight!== 0 ? commonItemArr[0].clientHeight : 37;
+                    itemHeight = commonItemArr.length !== 0 && commonItemArr[0].clientHeight !== 0 ? commonItemArr[0].clientHeight : 37;
                 }
                 this.itemHeight = itemHeight;
                 this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
