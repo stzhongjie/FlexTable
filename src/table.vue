@@ -465,13 +465,13 @@ export default {
                     });
                 } else {
                     console.log('进来', this.data)
-                    this.reSetItemHeight();
+                    // this.reSetItemHeight();
 
                     this.doLayout();
                     this.initData();
-                    // setTimeout(() => {
-                    //     this.reSetItemHeight();
-                    // }, 0)
+                    setTimeout(() => {
+                        this.reSetItemHeight();
+                    }, 0)
                 }
 
             },
