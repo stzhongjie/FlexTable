@@ -567,10 +567,12 @@ export default {
             // }
             setTimeout(() => {
                 let itemHeight = 0;
+                const virtualItemArr = document.getElementsByClassName('virtualItem'); // 虚拟滚动dom
+                const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
                 if(this.virtualScroll){
-                    itemHeight = document.getElementsByClassName('virtualItem').length !== 0 ? document.getElementsByClassName('virtualItem')[0].clientHeight : 37;
+                    itemHeight = virtualItemArr.length !== 0 && virtualItemArr[0].clientHeight !== 0 ? virtualItemArr[0].clientHeight : 37;
                 } else {
-                    itemHeight = document.getElementsByClassName('commonItem').length !== 0 ? document.getElementsByClassName('commonItem')[0].clientHeight : 37;
+                    itemHeight = commonItemArr.length !== 0 && commonItemArr !== 0 ? commonItemArr[0].clientHeight : 37;
                 }
                 this.itemHeight = itemHeight;
                 this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
