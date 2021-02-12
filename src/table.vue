@@ -406,7 +406,6 @@ export default {
             }
             return 'flex-table-head-fixed-layout';
         },
-
         // 虚拟滚动变量
         tableBody() {
             return this.$refs.tableBody;
@@ -424,8 +423,6 @@ export default {
             return this.totalSize - this.poolSize;
         },
         totalHeight() {      
-            console.log('this.itemHeight: ', this.itemHeight);
-
             return this.totalSize * this.itemHeight;
 
         },
@@ -465,13 +462,11 @@ export default {
                     });
                 } else {
                     console.log('进来', this.data)
-                    // this.reSetItemHeight();
-
                     this.doLayout();
                     this.initData();
-                    setTimeout(() => {
+                    this.$nextTick(() => {
                         this.reSetItemHeight();
-                    }, 0)
+                    });
                 }
 
             },
@@ -570,9 +565,9 @@ export default {
                 const virtualItemArr = document.getElementsByClassName('virtualItem'); // 虚拟滚动dom
                 const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
                 if(this.virtualScroll){
-                    itemHeight = virtualItemArr.length !== 0 && virtualItemArr[1].clientHeight !== 0 ? virtualItemArr[1].clientHeight : 37;
+                    itemHeight = virtualItemArr.length !== 0 && virtualItemArr[0].clientHeight !== 0 ? virtualItemArr[1].clientHeight : 37;
                 } else {
-                    itemHeight = commonItemArr.length !== 0 && commonItemArr[1].clientHeight !== 0 ? commonItemArr[1].clientHeight : 37;
+                    itemHeight = commonItemArr.length !== 0 && commonItemArr[0].clientHeight !== 0 ? commonItemArr[1].clientHeight : 37;
                 }
                 this.itemHeight = itemHeight;
                 this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
