@@ -459,6 +459,7 @@ export default {
                     this.doLayout();
                     this.$nextTick(() => {
                         this.updateTable();
+                        this.reSetItemHeight();
                     });
                 } else {
                     this.doLayout();
@@ -567,7 +568,6 @@ export default {
                 }
                 this.itemHeight = itemHeight;
                 this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
-                console.log('this.itemHeight: ', itemHeight, document.getElementsByClassName('commonItem'));
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
                 });

@@ -79,12 +79,12 @@ export default {
             ],
             loading: false,
             list: aTestList,
-            // sum:{
-            //     name: 'Jim Green',
-            //     age: 24,
-            //     address: 'London',
-            //     date: '2016-10-01',
-            // },
+            sum:{
+                name: 'Jim Green',
+                age: 24,
+                address: 'London',
+                date: '2016-10-01',
+            },
         }
     },
     mounted() {},

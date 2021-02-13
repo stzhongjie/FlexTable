@@ -7,7 +7,7 @@
             :columns="columns" 
             :data="list"
             :sum="sum"
-
+            :virtualScroll="10"
             @on-sort-change="onSortChange"
         ></flex-table>
     </div>
@@ -16,7 +16,7 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-    for(let i=0;i<20;i++){
+    for(let i=0;i<200;i++){
     const oTestData = {
         name: 'John Brown',
         age: 18,
