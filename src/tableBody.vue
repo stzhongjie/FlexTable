@@ -254,10 +254,9 @@ export default {
     &:hover{
         background-color: #ebf7ff;
     }
-}
-
-.flex-table-body .flex-table-tr > .flex-table-row:last-child{
-    border-bottom: 1px solid #EEEEEE;
+    &:last-child{
+        border-bottom: 1px solid #EEEEEE;
+    }
 }
 
 </style>
