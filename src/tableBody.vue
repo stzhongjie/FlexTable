@@ -28,7 +28,7 @@
             </div>
         </div>
 
-        <div class="flex-table-tr" v-if="data.length" :style="scrollerStyle">
+        <div class="flex-table-tr" v-if="data.length" :style="virtualScroll ? scrollerStyle : null">
             <div v-for="(row, index) in data" :key="index" :class="`${virtualScroll ? 'virtualItem' : 'commonItem'}`" :style="virtualScroll ? `transform: translateY(${row.top}px)` : ''">
                 <table-tr
                     :key="index"

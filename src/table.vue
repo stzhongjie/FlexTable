@@ -461,14 +461,12 @@ export default {
                         this.updateTable();
                     });
                 } else {
-                    console.log('进来', this.data)
-                    // this.reSetItemHeight();
-
+                    console.log('进来11', this.data)
                     this.doLayout();
                     this.initData();
-                    this.$nextTick(() => {
-                        this.reSetItemHeight();
-                    });
+                    // this.$nextTick(() => {
+                    //     this.reSetItemHeight();
+                    // });
                 }
 
             },

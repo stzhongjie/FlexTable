@@ -21,11 +21,11 @@
 
 
 const aTestList = [];
-for(let i=0;i<20;i++){
+for(let i=0;i<2;i++){
     const oTestData = {
         name: 'John Brown',
         age: 18,
-        address: 'New York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkYork No. 1 Lake ParkLake ParkYork No. 1 Lake Park',
+        address: i === 1 ? 'New York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkYork No. 1 Lake ParkLake ParkYork No. 1 Lake Park' : '123',
         real_address: 'New York No. 1 Lake Park',
         date: '2016-10-03',
     };
