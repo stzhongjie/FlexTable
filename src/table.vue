@@ -173,7 +173,6 @@
             </div>
         </div>
     </div>
-    <!-- v-if="showScrollBar"-->
     <tableScrollBar
         v-if="showScrollBar"
         :body-h="bodyH"
@@ -437,9 +436,6 @@ export default {
             };
         },  
     },
-    created() {
-        // this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
-    },
     mounted(){
         this.doLayout();
         window.addEventListener('resize',this.doLayout);
@@ -550,13 +546,14 @@ export default {
     methods:{
         reSetItemHeight() {
             // 这里给 height 赋值是为了出现滚动条
-            // if(this.virtualScroll){
-            //     if(this.height){
-            //         this.tableHeight = this.height
-            //     } else {
-            //         this.tableHeight = this.maxHeight;
-            //     }
-            // }
+            if(this.virtualScroll){
+                console.log('virtualScroll: ', this.virtualScroll);
+                if(this.height){
+                    this.tableHeight = this.height
+                } else {
+                    this.tableHeight = this.maxHeight;
+                }
+            }
             setTimeout(() => {
                 let itemHeight = 0;
                 const virtualItemArr = document.getElementsByClassName('virtualItem'); // 虚拟滚动dom
