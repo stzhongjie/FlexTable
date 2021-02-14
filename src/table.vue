@@ -545,15 +545,6 @@ export default {
     },
     methods:{
         reSetItemHeight() {
-            // 这里给 height 赋值是为了出现滚动条
-            if(this.virtualScroll){
-                console.log('virtualScroll: ', this.virtualScroll);
-                if(this.height){
-                    this.tableHeight = this.height
-                } else {
-                    this.tableHeight = this.maxHeight;
-                }
-            }
             setTimeout(() => {
                 let itemHeight = 0;
                 const virtualItemArr = document.getElementsByClassName('virtualItem'); // 虚拟滚动dom
@@ -565,6 +556,7 @@ export default {
                 }
                 this.itemHeight = itemHeight;
                 this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
+                console.log('this.maxHeight', this.maxHeight);
                 this.syncScroll({
                     target: { scrollTop: itemHeight },
                 });
@@ -573,6 +565,15 @@ export default {
                         target: { scrollTop: 0 },
                     });
                 }, 10);
+                // 这里给 height 赋值是为了出现滚动条
+            if(this.virtualScroll){
+                console.log('virtualScroll: ', this.height, this.maxHeight);
+                if(this.height){
+                    this.tableHeight = this.height
+                } else {
+                    this.tableHeight = this.maxHeight;
+                }
+            }
             }, 0);
         },
         updateTable() {
