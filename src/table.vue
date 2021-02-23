@@ -484,7 +484,7 @@ export default {
                     });
                     setTimeout(() => {
                         this.reSetItemHeight(); 
-                    }, 0)
+                    }, 2000)
                 } else {
                     this.doLayout();
                     this.initData();
