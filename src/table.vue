@@ -657,6 +657,7 @@ export default {
                         news['_isChecked'] = false; // 滚动时去掉勾选
                     });
                 }
+                console.log('returndata1: ', newData, itemHeight);
                 return (this.dataList = newData);
             }
 
@@ -680,7 +681,7 @@ export default {
                 item.top = newIndex * itemHeight;
                 item.pos = newIndex++;
             });
-            console.log('returndata: ', data, itemHeight);
+            console.log('returndata2: ', data, itemHeight);
             return data;
         },
         onScroll(event) {
