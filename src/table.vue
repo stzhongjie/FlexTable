@@ -474,15 +474,15 @@ export default {
     },
     watch: {
         data: {
-            handler: function () {
+            handler: function (data) {
                 if (this.virtualScroll) {
                     this.doLayout();
-                    // this.$nextTick(() => {
-                    //     this.updateTable();
-                    // });
+                    
+                    this.updateTable();
+
                     setTimeout(() => {
-                        this.updateTable();
                         this.reSetItemHeight(); 
+
                     }, 0)
                 } else {
                     this.doLayout();
@@ -620,20 +620,23 @@ export default {
             }, 0);
         },
         updateTable() {
-            const { maxIndex, itemHeight, poolSize } = this;
+            const { data, maxIndex, itemHeight, poolSize } = this;
             const currentIndex = Math.floor(
                 this.$refs.tableBody.scrollTop / itemHeight
             );
             const startIndex = Math.min(maxIndex, currentIndex);
-            /* 当前列表的索引发生实际变化时才进行切片触发更新 */
+            // 当前列表的索引发生实际变化时才进行切片触发更新
             const shouldUpdate = this.prevStartIndex !== startIndex;
 
             if (!shouldUpdate) return;
 
-            /* 获取滚动方向和差值，优化滚动性能和复用DOM */
+            // 获取滚动方向和差值，优化滚动性能和复用DOM
             const scrollGap = startIndex - this.prevStartIndex || 0;
-            const endIndex = startIndex + poolSize; /*  - 1 */
-
+            let endIndex = startIndex + poolSize;
+            // 若endIndex小于数据总条数，endIndex赋值为数据总条数
+            if(endIndex < data.length){
+                endIndex = data.length
+            }
             // update reactive property `pool`
             this.genePoolModel(startIndex, endIndex, scrollGap);
 
@@ -658,7 +661,6 @@ export default {
                         news['_isChecked'] = false; // 滚动时去掉勾选
                     });
                 }
-                console.log('returndata1: ', newData, startIndex, itemHeight);
                 return (this.dataList = newData);
             }
 
@@ -682,7 +684,6 @@ export default {
                 item.top = newIndex * itemHeight;
                 item.pos = newIndex++;
             });
-            console.log('returndata2: ', data, itemHeight);
             return data;
         },
         onScroll(event) {

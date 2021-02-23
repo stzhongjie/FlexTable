@@ -18,7 +18,7 @@
             :minWidth="80"
             :maxWidth="600"
             @on-scroll-x="onTableScroll"
-            :virtualScroll="10"
+            :virtualScroll="aTestList.length > 6 ? 6 : 0"
         ></flex-table>
         <button @click="add">按钮</button>
     </div>
@@ -27,7 +27,7 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-for (let i = 0; i < 20; i++) {
+for (let i = 0; i < 5; i++) {
     const oTestData = {
         name: 'John Brown',
         age: 18,
@@ -47,6 +47,7 @@ export default {
     // },
     data() {
         return {
+            aTestList: aTestList,
             columns: [
                 {
                     title: 'Name',
