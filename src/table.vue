@@ -475,16 +475,23 @@ export default {
     watch: {
         data: {
             handler: function () {
+                console.log('进来data: ');
                 if (this.virtualScroll) {
                     this.doLayout();
+
                     this.$nextTick(() => {
                         this.updateTable();
-                        this.reSetItemHeight();
                     });
+                    setTimeout(() => {
+                        this.reSetItemHeight(); 
+                    }, 0)
                 } else {
                     this.doLayout();
                     this.initData();
                 }
+                // setTimeout(() => {
+                //    this.reSetItemHeight(); 
+                // }, 2000)
             },
             deep: true,
             immediate: true,
@@ -493,9 +500,6 @@ export default {
             handler(value) {
                 if (this.virtualScroll) {
                     this.isSameDataRef = value === this.data;
-                    this.$nextTick(() => {
-                        this.updateTable();
-                    });
                 }
             },
             deep: true,
@@ -641,7 +645,6 @@ export default {
             this.requestId && cancelAnimationFrame(this.requestId);
         },
         genePoolModel(startIndex, endIndex, direction) {
-            console.log('startIndex: ', startIndex, endIndex);
             const { data, itemHeight, dataList, isSameDataRef } = this;
             if (!dataList.length || !isSameDataRef) {
                 // reset flag
