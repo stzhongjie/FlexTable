@@ -136,7 +136,7 @@ export default {
         scrollTop(scrollTop) {
             this.$el.scrollTop = scrollTop;
         },
-        data(val) {
+        data() {
             this.updateRowList();
         }
     },
