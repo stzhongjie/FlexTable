@@ -646,9 +646,9 @@ export default {
                 this.isSameDataRef = true;
                 const newData = data
                     .slice(startIndex, endIndex)
-                    .map((item) => ({
+                    .map((item, index) => ({
                         item,
-                        top: startIndex * itemHeight,
+                        top: startIndex || index * itemHeight,
                         pos: startIndex++,
                     }));
                 for (const news of newData) {
@@ -657,7 +657,7 @@ export default {
                         news['_isChecked'] = false; // 滚动时去掉勾选
                     });
                 }
-                console.log('returndata1: ', newData, itemHeight);
+                console.log('returndata1: ', newData, startIndex, itemHeight);
                 return (this.dataList = newData);
             }
 
