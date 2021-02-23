@@ -137,7 +137,6 @@ export default {
             this.$el.scrollTop = scrollTop;
         },
         data(val) {
-            console.log('valdata: ', val);
             this.updateRowList();
         }
     },

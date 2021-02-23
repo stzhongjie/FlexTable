@@ -680,7 +680,7 @@ export default {
                 item.top = newIndex * itemHeight;
                 item.pos = newIndex++;
             });
-
+            console.log('returndata: ', data, itemHeight);
             return data;
         },
         onScroll(event) {
