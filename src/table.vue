@@ -476,13 +476,10 @@ export default {
         data: {
             handler: function (data) {
                 if (this.virtualScroll) {
-                    this.doLayout();
-                    
+                    this.doLayout();      
                     this.updateTable();
-
                     setTimeout(() => {
                         this.reSetItemHeight(); 
-
                     }, 0)
                 } else {
                     this.doLayout();
@@ -633,10 +630,11 @@ export default {
             // 获取滚动方向和差值，优化滚动性能和复用DOM
             const scrollGap = startIndex - this.prevStartIndex || 0;
             let endIndex = startIndex + poolSize;
+            console.log('endIndex: ', endIndex, data);
             // 若endIndex小于数据总条数，endIndex赋值为数据总条数
-            if(endIndex < data.length){
-                endIndex = data.length
-            }
+            // if(endIndex < data.length){
+            //     endIndex = data.length
+            // }
             // update reactive property `pool`
             this.genePoolModel(startIndex, endIndex, scrollGap);
 
