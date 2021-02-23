@@ -476,8 +476,10 @@ export default {
                     this.doLayout();
                     this.$nextTick(() => {
                         this.updateTable();
-                        this.reSetItemHeight();
                     });
+                    setTimeout(() => {
+                        this.reSetItemHeight();
+                    }, 0)
                 } else {
                     this.doLayout();
                     this.initData();
