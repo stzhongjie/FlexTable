@@ -8,7 +8,7 @@
         <div v-for="(item, index) in rowSpanList" :key="index">
             <div
                 :class="`flex-table-tr flex-table-span ${virtualScroll ? 'virtualItem' : 'commonItem'}`"
-                :style="[item.style, virtualScroll ? `transform: translateY(${row.top}px)` : '']">
+                :style="[item.style, virtualScroll ? `transform: translateY(${item.top}px)` : '']">
                 <table-tr
                     row-span
                     :column-index="item.columnIndex"
@@ -136,7 +136,8 @@ export default {
         scrollTop(scrollTop) {
             this.$el.scrollTop = scrollTop;
         },
-        data() {
+        data(val) {
+            console.log('valdata: ', val);
             this.updateRowList();
         }
     },
