@@ -475,23 +475,18 @@ export default {
     watch: {
         data: {
             handler: function () {
-                console.log('进来data: ');
                 if (this.virtualScroll) {
                     this.doLayout();
-
                     this.$nextTick(() => {
                         this.updateTable();
                     });
                     setTimeout(() => {
                         this.reSetItemHeight(); 
-                    }, 2000)
+                    }, 0)
                 } else {
                     this.doLayout();
                     this.initData();
                 }
-                // setTimeout(() => {
-                //    this.reSetItemHeight(); 
-                // }, 2000)
             },
             deep: true,
             immediate: true,
