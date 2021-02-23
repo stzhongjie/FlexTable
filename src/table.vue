@@ -477,10 +477,11 @@ export default {
             handler: function () {
                 if (this.virtualScroll) {
                     this.doLayout();
-                    this.$nextTick(() => {
-                        this.updateTable();
-                    });
+                    // this.$nextTick(() => {
+                    //     this.updateTable();
+                    // });
                     setTimeout(() => {
+                        this.updateTable();
                         this.reSetItemHeight(); 
                     }, 0)
                 } else {
@@ -646,9 +647,9 @@ export default {
                 this.isSameDataRef = true;
                 const newData = data
                     .slice(startIndex, endIndex)
-                    .map((item, index) => ({
+                    .map((item) => ({
                         item,
-                        top: startIndex || index * itemHeight,
+                        top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
                 for (const news of newData) {
