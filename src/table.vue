@@ -655,7 +655,6 @@ export default {
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
-                console.log('newData: ', newData, startIndex, itemHeight);
                 
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
@@ -682,9 +681,11 @@ export default {
             diffIndexes.forEach((index) => {
                 const item = dataList[index];
                 item.data = data[newIndex]; /* update data by new index */
-                item.top = newIndex * itemHeight;
-                item.pos = newIndex++;
+                item.top = (newIndex ? newIndex : index) * itemHeight;
+                item.pos = newIndex ? newIndex++ : index++;
             });
+            console.log('newData: ', newData, newIndex, index, itemHeight);
+
             return data;
         },
         onScroll(event) {
