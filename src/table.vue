@@ -596,13 +596,11 @@ export default {
                     'commonItem'
                 ); // 普通dom
                 if (this.isVirtualScroll) {
-
                     itemHeight =
                         virtualItemArr.length !== 0 &&
                         virtualItemArr[0].clientHeight !== 0
                             ? virtualItemArr[0].clientHeight
                             : 37;
-                    
                 } else {
                     itemHeight =
                         commonItemArr.length !== 0 &&
@@ -643,13 +641,13 @@ export default {
             if (!shouldUpdate) return;
             /* 获取滚动方向和差值，优化滚动性能和复用DOM */
             const scrollGap = startIndex - this.prevStartIndex || 0;
-            const endIndex = startIndex + poolSize;
-            // let endIndex = startIndex + poolSize; /*  - 1 */
-            // console.log('endIndex: ', startIndex, endIndex);
+            // const endIndex = startIndex + poolSize;
+            let endIndex = startIndex + poolSize; /*  - 1 */
+            console.log('endIndex: ', startIndex, endIndex);
 
-            // if(startIndex === 0 && endIndex < this.virtualScroll){
-            //     endIndex = data.length
-            // }
+            if(startIndex === 0 && endIndex < this.virtualScroll){
+                endIndex = data.length
+            }
             this.genePoolModel(startIndex, endIndex, scrollGap);
             this.prevStartIndex = startIndex;
             this.requestId && cancelAnimationFrame(this.requestId);
