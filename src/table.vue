@@ -629,11 +629,12 @@ export default {
             if (!shouldUpdate) return;
             /* 获取滚动方向和差值，优化滚动性能和复用DOM */
             const scrollGap = startIndex - this.prevStartIndex || 0;
+            // const endIndex = startIndex + poolSize;
             let endIndex = startIndex + poolSize; /*  - 1 */
-            if(endIndex < data.length){
-                endIndex = data.length
+
+            if(startIndex === 0 && endIndex < this.virtualScroll){
+                endIndex = this.virtualScroll
             }
-            // update reactive property `pool`
             this.genePoolModel(startIndex, endIndex, scrollGap);
             this.prevStartIndex = startIndex;
             this.requestId && cancelAnimationFrame(this.requestId);

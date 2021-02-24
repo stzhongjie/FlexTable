@@ -8,7 +8,6 @@
                 >source code</a
             >
         </p>
-
         <flex-table
             resizable
             :loading="loading"
@@ -27,7 +26,7 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 5000; i++) {
     const oTestData = {
         name: 'John Brown',
         age: 18,
