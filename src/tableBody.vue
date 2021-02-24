@@ -7,7 +7,7 @@
         >
         <div v-for="(item, index) in rowSpanList" :key="index">
             <div
-                :class="`flex-table-tr flex-table-span ${virtualScroll ? 'virtualItem' : 'commonItem'}`"
+                :class="`flex-table-tr flex-table-span ${isVirtualScroll ? 'virtualItem' : 'commonItem'}`"
                 :style="[item.style, virtualScroll ? `transform: translateY(${item.top}px)` : '']">
                 <table-tr
                     row-span
@@ -28,8 +28,8 @@
             </div>
         </div>
 
-        <div class="flex-table-tr" v-if="data.length" :style="virtualScroll ? scrollerStyle : null">
-            <div v-for="(row, index) in data" :key="index" :class="`${virtualScroll ? 'virtualItem' : 'commonItem'}`" :style="virtualScroll ? `transform: translateY(${row.top}px)` : ''">
+        <div class="flex-table-tr" v-if="data.length" :style="isVirtualScroll ? scrollerStyle : null">
+            <div v-for="(row, index) in data" :key="index" :class="`${isVirtualScroll ? 'virtualItem' : 'commonItem'}`" :style="isVirtualScroll ? `transform: translateY(${row.top}px)` : ''">
                 <table-tr
                     :key="index"
                     :row="row"
@@ -130,7 +130,10 @@ export default {
                 }
             });
             return render;
-        }
+        },
+        isVirtualScroll(){
+            return this.virtualScroll && this.virtualScroll < this.data.length;
+        },
     },
     watch: {
         scrollTop(scrollTop) {

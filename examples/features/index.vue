@@ -17,7 +17,7 @@
             :minWidth="80"
             :maxWidth="600"
             @on-scroll-x="onTableScroll"
-            :virtualScroll="aTestList.length > 6 ? 6 : 0"
+            :virtualScroll="6"
         ></flex-table>
         <button @click="add">按钮</button>
     </div>

@@ -416,7 +416,7 @@ export default {
             }, 0);
         },
         showScrollBar: function () {
-            if (this.virtualScroll) {
+            if (this.isVirtualScroll) {
                 return this.totalHeight > this.maxHeight;
             }
             return this.bodyH > this.maxHeight;
@@ -456,6 +456,9 @@ export default {
                 overflow: 'hidden',
             };
         },
+        isVirtualScroll(){
+            return this.virtualScroll && this.virtualScroll < this.data.length;
+        },
     },
     mounted() {
         this.doLayout();
@@ -472,14 +475,18 @@ export default {
     watch: {
         data: {
             handler: function () {
-                if (this.virtualScroll) {
+                console.log('this.isVirtualScroll`: ', this.isVirtualScroll);
+                if (this.isVirtualScroll) {
                     this.doLayout();
-                    this.$nextTick(() => {
-                        this.updateTable();
-                    });
+                    // this.$nextTick(() => {
+                    //     this.updateTable();
+                    // });
                     setTimeout(() => {
                         this.reSetItemHeight();
                     }, 0)
+                    setTimeout(() => {
+                        this.updateTable();
+                    }, 100)
                 } else {
                     this.doLayout();
                     this.initData();
@@ -490,7 +497,7 @@ export default {
         },
         dataList: {
             handler(value) {
-                if (this.virtualScroll) {
+                if (this.isVirtualScroll) {
                     this.isSameDataRef = value === this.data;
                     this.$nextTick(() => {
                         this.updateTable();
@@ -583,7 +590,7 @@ export default {
                 const commonItemArr = document.getElementsByClassName(
                     'commonItem'
                 ); // 普通dom
-                if (this.virtualScroll) {
+                if (this.isVirtualScroll) {
                     itemHeight =
                         virtualItemArr.length !== 0 &&
                         virtualItemArr[0].clientHeight !== 0
@@ -609,7 +616,7 @@ export default {
                     });
                 }, 10);
                 // 这里给 height 赋值是为了出现滚动条
-                if (this.virtualScroll) {
+                if (this.isVirtualScroll) {
                     if (this.height) {
                         this.tableHeight = this.height;
                     } else {
@@ -629,12 +636,13 @@ export default {
             if (!shouldUpdate) return;
             /* 获取滚动方向和差值，优化滚动性能和复用DOM */
             const scrollGap = startIndex - this.prevStartIndex || 0;
-            // const endIndex = startIndex + poolSize;
-            let endIndex = startIndex + poolSize; /*  - 1 */
+            const endIndex = startIndex + poolSize;
+            // let endIndex = startIndex + poolSize; /*  - 1 */
+            // console.log('endIndex: ', startIndex, endIndex);
 
-            if(startIndex === 0 && endIndex < this.virtualScroll){
-                endIndex = this.virtualScroll
-            }
+            // if(startIndex === 0 && endIndex < this.virtualScroll){
+            //     endIndex = data.length
+            // }
             this.genePoolModel(startIndex, endIndex, scrollGap);
             this.prevStartIndex = startIndex;
             this.requestId && cancelAnimationFrame(this.requestId);
@@ -659,6 +667,8 @@ export default {
                 }
                 return (this.dataList = newData);
             }
+                console.log('this.dataList: ', this.dataList);
+
             const newIndexes = new Array(endIndex - startIndex)
                 .fill(startIndex)
                 .map((i, d) => i + d);
@@ -687,7 +697,7 @@ export default {
         syncScroll: throttle(function (event) {
             const { scrollTop } = event.target;
             this.scrollTop = scrollTop;
-            if (this.virtualScroll) {
+            if (this.isVirtualScroll) {
                 this.requestId = requestAnimationFrame(() => {
                     this.$nextTick(() => {
                         this.updateTable();
@@ -756,7 +766,7 @@ export default {
                     this.$emit('on-render-done');
                 }
             } else {
-                if (!this.virtualScroll) {
+                if (!this.isVirtualScroll) {
                     this.data.forEach((item, index) => {
                         this.copyItem(item, index);
                     });
@@ -836,7 +846,7 @@ export default {
                     item._isChecked = status;
                 }
             });
-            if (this.virtualScroll) {
+            if (this.isVirtualScroll) {
                 const dataList = JSON.parse(JSON.stringify(this.dataList));
                 if (
                     this.virtualScroll &&
