@@ -27,7 +27,7 @@
 
 const aTestList = [];
 const aTestList2 = [];
-for (let i = 0; i < 7; i++) {
+for (let i = 0; i < 700; i++) {
     const oTestData = {
         name: 'John Brown',
         age: 18,

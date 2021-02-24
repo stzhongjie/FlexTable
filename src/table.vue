@@ -475,7 +475,6 @@ export default {
     watch: {
         data: {
             handler: function () {
-                console.log('this.isVirtualScroll`: ', this.isVirtualScroll);
                 if (this.isVirtualScroll) {
                     this.doLayout();
                     // this.$nextTick(() => {
@@ -484,11 +483,9 @@ export default {
                     // })
 
                     setTimeout(() => {
-                        console.log('this.isVirtualScroll`1: ');
                         this.reSetItemHeight();
                     }, 0)
                     setTimeout(() => {
-                        console.log('this.isVirtualScroll`2: ');
                         this.updateTable();
                     }, 100);
                 } else {
@@ -641,13 +638,7 @@ export default {
             if (!shouldUpdate) return;
             /* 获取滚动方向和差值，优化滚动性能和复用DOM */
             const scrollGap = startIndex - this.prevStartIndex || 0;
-            // const endIndex = startIndex + poolSize;
-            let endIndex = startIndex + poolSize; /*  - 1 */
-            console.log('endIndex: ', startIndex, endIndex);
-
-            if(startIndex === 0 && endIndex < this.virtualScroll){
-                endIndex = data.length
-            }
+            const endIndex = startIndex + poolSize;
             this.genePoolModel(startIndex, endIndex, scrollGap);
             this.prevStartIndex = startIndex;
             this.requestId && cancelAnimationFrame(this.requestId);
@@ -664,6 +655,8 @@ export default {
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
+                console.log('newData: ', newData, startIndex, itemHeight);
+                
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
@@ -672,7 +665,6 @@ export default {
                 }
                 return (this.dataList = newData);
             }
-                console.log('this.dataList: ', this.dataList);
 
             const newIndexes = new Array(endIndex - startIndex)
                 .fill(startIndex)
