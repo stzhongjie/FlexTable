@@ -26,7 +26,8 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-for (let i = 0; i < 5000; i++) {
+const aTestList2 = [];
+for (let i = 0; i < 7; i++) {
     const oTestData = {
         name: 'John Brown',
         age: 18,
@@ -38,6 +39,20 @@ for (let i = 0; i < 5000; i++) {
         num: i,
     };
     aTestList.push(oTestData);
+}
+
+for (let i = 0; i < 7; i++) {
+    const oTestData = {
+        name: 'John Brown',
+        age: 18,
+        sex: '男',
+        school: 'high school',
+        color: 'red',
+        address: 'New York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew Y',
+        date: '2016-10-03',
+        num: i,
+    };
+    aTestList2.push(oTestData);
 }
 
 export default {
@@ -94,6 +109,7 @@ export default {
             ],
             loading: false,
             list: aTestList,
+            list2: aTestList2,
             sum: {
                 name: 'Jim Green',
                 age: 24,

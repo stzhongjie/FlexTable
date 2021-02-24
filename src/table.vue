@@ -479,14 +479,18 @@ export default {
                 if (this.isVirtualScroll) {
                     this.doLayout();
                     // this.$nextTick(() => {
-                    //     this.updateTable();
-                    // });
+                    // this.updateTable();
+
+                    // })
+
                     setTimeout(() => {
+                        console.log('this.isVirtualScroll`1: ');
                         this.reSetItemHeight();
                     }, 0)
                     setTimeout(() => {
+                        console.log('this.isVirtualScroll`2: ');
                         this.updateTable();
-                    }, 100)
+                    }, 100);
                 } else {
                     this.doLayout();
                     this.initData();
@@ -587,15 +591,18 @@ export default {
                 const virtualItemArr = document.getElementsByClassName(
                     'virtualItem'
                 ); // 虚拟滚动dom
+
                 const commonItemArr = document.getElementsByClassName(
                     'commonItem'
                 ); // 普通dom
                 if (this.isVirtualScroll) {
+
                     itemHeight =
                         virtualItemArr.length !== 0 &&
                         virtualItemArr[0].clientHeight !== 0
                             ? virtualItemArr[0].clientHeight
                             : 37;
+                    
                 } else {
                     itemHeight =
                         commonItemArr.length !== 0 &&
