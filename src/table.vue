@@ -655,7 +655,7 @@ export default {
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
-                console.log('newData1: ', newData, startIndex, itemHeight);
+                console.log('newData1: ', newData, startIndex, endIndex, endIndex ? endIndex : data.length);
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
