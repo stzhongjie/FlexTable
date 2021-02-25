@@ -649,7 +649,7 @@ export default {
                 // reset flag
                 this.isSameDataRef = true;
                 const newData = data
-                    .slice(startIndex, endIndex)
+                    .slice(startIndex, endIndex ? endIndex : data.length)
                     .map((item) => ({
                         item,
                         top: startIndex * itemHeight,
