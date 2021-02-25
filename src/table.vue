@@ -582,14 +582,16 @@ export default {
         abc(){
             this.doLayout();
                     setTimeout(() => {
+                        console.log('进来reSetItemHeight: ');
+
                         this.reSetItemHeight();
                     }, 0);
-                    // setTimeout(() => {
-                    //     this.updateTable();
-                    // }, 100);
+                    setTimeout(() => {
+                        console.log('进来updateTable: ');
+                        this.updateTable();
+                    }, 100);
         },
         reSetItemHeight() {
-            console.log('进来reSetItemHeight: ');
             let itemHeight = 0;
             const virtualItemArr = document.getElementsByClassName(
                 'virtualItem'
