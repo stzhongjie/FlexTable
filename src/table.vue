@@ -649,19 +649,20 @@ export default {
                 // reset flag
                 this.isSameDataRef = true;
                 const newData = data
-                    .slice(startIndex, endIndex ? endIndex : data.length)
+                    .slice(startIndex, endIndex)
                     .map((item) => ({
                         item,
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
-                console.log('newData1: ', newData, startIndex, endIndex, endIndex ? endIndex : data.length);
+                
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
                         news['_isChecked'] = false; // 滚动时去掉勾选
                     });
                 }
+                console.log('newData1: ', newData, startIndex * itemHeight);
                 return (this.dataList = newData);
             }
 
