@@ -38,6 +38,7 @@
                     :scrollerStyle="scrollerStyle"
                     @scroll.native.passive="syncScroll"
                     @on-toggle-select="toggleSelect"
+                    @reSetItemHeight="abc"
                 ></table-body>
                 <!-- /flex-table-body -->
 
@@ -456,7 +457,8 @@ export default {
                 overflow: 'hidden',
             };
         },
-        isVirtualScroll(){
+        isVirtualScroll() {
+            // this.virtualScroll && this.virtualScroll < this.data.length;
             return this.virtualScroll && this.virtualScroll < this.data.length;
         },
     },
@@ -477,14 +479,9 @@ export default {
             handler: function () {
                 if (this.isVirtualScroll) {
                     this.doLayout();
-                    // this.$nextTick(() => {
-                    // this.updateTable();
-
-                    // })
-
                     setTimeout(() => {
                         this.reSetItemHeight();
-                    }, 0)
+                    }, 0);
                     setTimeout(() => {
                         this.updateTable();
                     }, 100);
@@ -582,50 +579,55 @@ export default {
         );
     },
     methods: {
+        abc(){
+            this.doLayout();
+                    setTimeout(() => {
+                        this.reSetItemHeight();
+                    }, 0);
+                    // setTimeout(() => {
+                    //     this.updateTable();
+                    // }, 100);
+        },
         reSetItemHeight() {
-            // setTimeout(() => {
-                let itemHeight = 0;
-                const virtualItemArr = document.getElementsByClassName(
-                    'virtualItem'
-                ); // 虚拟滚动dom
-
-                const commonItemArr = document.getElementsByClassName(
-                    'commonItem'
-                ); // 普通dom
-                if (this.isVirtualScroll) {
-                    itemHeight =
-                        virtualItemArr.length !== 0 &&
-                        virtualItemArr[0].clientHeight !== 0
-                            ? virtualItemArr[0].clientHeight
-                            : 37;
-                } else {
-                    itemHeight =
-                        commonItemArr.length !== 0 &&
-                        commonItemArr[0].clientHeight !== 0
-                            ? commonItemArr[0].clientHeight
-                            : 37;
-                }
-                this.itemHeight = itemHeight;
-                this.maxHeight = this.virtualScroll
-                    ? this.virtualScroll * this.itemHeight
-                    : 0;
+            console.log('进来reSetItemHeight: ');
+            let itemHeight = 0;
+            const virtualItemArr = document.getElementsByClassName(
+                'virtualItem'
+            ); // 虚拟滚动dom
+            const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
+            if (this.isVirtualScroll) {
+                itemHeight =
+                    virtualItemArr.length !== 0 &&
+                    virtualItemArr[0].clientHeight !== 0
+                        ? virtualItemArr[0].clientHeight
+                        : 37;
+            } else {
+                itemHeight =
+                    commonItemArr.length !== 0 &&
+                    commonItemArr[0].clientHeight !== 0
+                        ? commonItemArr[0].clientHeight
+                        : 37;
+            }
+            this.itemHeight = itemHeight;
+            this.maxHeight = this.virtualScroll
+                ? this.virtualScroll * this.itemHeight
+                : 0;
+            this.syncScroll({
+                target: { scrollTop: itemHeight },
+            });
+            setTimeout(() => {
                 this.syncScroll({
-                    target: { scrollTop: itemHeight },
+                    target: { scrollTop: 0 },
                 });
-                setTimeout(() => {
-                    this.syncScroll({
-                        target: { scrollTop: 0 },
-                    });
-                }, 10);
-                // 这里给 height 赋值是为了出现滚动条
-                if (this.isVirtualScroll) {
-                    if (this.height) {
-                        this.tableHeight = this.height;
-                    } else {
-                        this.tableHeight = this.maxHeight;
-                    }
+            }, 10);
+            // 这里给 height 赋值是为了出现滚动条
+            if (this.isVirtualScroll) {
+                if (this.height) {
+                    this.tableHeight = this.height;
+                } else {
+                    this.tableHeight = this.maxHeight;
                 }
-            // }, 0);
+            }
         },
         updateTable() {
             const { data, maxIndex, itemHeight, poolSize } = this;
@@ -685,7 +687,6 @@ export default {
                 item.top = (newIndex ? newIndex : index) * itemHeight;
                 item.pos = newIndex ? newIndex++ : index++;
             });
-            console.log('newData2: ', newData, newIndex, index, itemHeight);
 
             return data;
         },

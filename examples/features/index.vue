@@ -27,7 +27,7 @@
 
 const aTestList = [];
 const aTestList2 = [];
-for (let i = 0; i < 0; i++) {
+for (let i = 0; i < 2; i++) {
     const oTestData = {
         name: 'John Brown',
         age: 18,
@@ -124,7 +124,7 @@ export default {
             console.log(event.target.scrollLeft);
         },
         add() {
-            aTestList.push({
+            aTestList.unshift({
                 name: '666',
                 age: 18,
                 sex: '男',

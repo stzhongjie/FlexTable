@@ -8,7 +8,7 @@
         <div v-for="(item, index) in rowSpanList" :key="index">
             <div
                 :class="`flex-table-tr flex-table-span ${isVirtualScroll ? 'virtualItem' : 'commonItem'}`"
-                :style="[item.style, virtualScroll ? `transform: translateY(${item.top}px)` : '']">
+                :style="[item.style, isVirtualScroll ? `transform: translateY(${item.top}px)` : '']">
                 <table-tr
                     row-span
                     :column-index="item.columnIndex"
@@ -116,7 +116,7 @@ export default {
     },
     computed: {
         style() {
-            return {'height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
         },
         expandRender() {
             let render = noop;
@@ -139,8 +139,12 @@ export default {
         scrollTop(scrollTop) {
             this.$el.scrollTop = scrollTop;
         },
-        data() {
+        data(data) {
             this.updateRowList();
+            if(!data[0].top && data[0].top !== 0){
+                console.log('data: ', data);
+                this.$emit('reSetItemHeight')
+            }
         }
     },
     data(){
