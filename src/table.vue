@@ -583,7 +583,7 @@ export default {
     },
     methods: {
         reSetItemHeight() {
-            setTimeout(() => {
+            // setTimeout(() => {
                 let itemHeight = 0;
                 const virtualItemArr = document.getElementsByClassName(
                     'virtualItem'
@@ -625,14 +625,15 @@ export default {
                         this.tableHeight = this.maxHeight;
                     }
                 }
-            }, 0);
+            // }, 0);
         },
         updateTable() {
             const { data, maxIndex, itemHeight, poolSize } = this;
             const currentIndex = Math.floor(
                 this.$refs.tableBody.scrollTop / itemHeight
             );
-            const startIndex = Math.min(maxIndex, currentIndex);
+            let startIndex = Math.min(maxIndex, currentIndex);
+            // startIndex < 0 ? startIndex = 1 : startIndex
             /* 当前列表的索引发生实际变化时才进行切片触发更新 */
             const shouldUpdate = this.prevStartIndex !== startIndex;
             if (!shouldUpdate) return;
@@ -655,14 +656,13 @@ export default {
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
-                
+                console.log('itemHeight: ', startIndex, endIndex, itemHeight);
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
                         news['_isChecked'] = false; // 滚动时去掉勾选
                     });
                 }
-                console.log('newData1: ', newData, startIndex * itemHeight);
                 return (this.dataList = newData);
             }
 
