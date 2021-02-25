@@ -655,7 +655,7 @@ export default {
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
-                
+                console.log('newData1: ', newData, startIndex, itemHeight);
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
@@ -684,7 +684,7 @@ export default {
                 item.top = (newIndex ? newIndex : index) * itemHeight;
                 item.pos = newIndex ? newIndex++ : index++;
             });
-            console.log('newData: ', newData, newIndex, index, itemHeight);
+            console.log('newData2: ', newData, newIndex, index, itemHeight);
 
             return data;
         },
