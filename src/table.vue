@@ -38,7 +38,7 @@
                     :scrollerStyle="scrollerStyle"
                     @scroll.native.passive="syncScroll"
                     @on-toggle-select="toggleSelect"
-                    @reSetItemHeight="abc"
+
                 ></table-body>
                 <!-- /flex-table-body -->
 
@@ -579,17 +579,17 @@ export default {
         );
     },
     methods: {
-        abc(){
+        abc() {
             this.doLayout();
-                    setTimeout(() => {
-                        console.log('进来reSetItemHeight: ');
+            setTimeout(() => {
+                console.log('进来reSetItemHeight: ');
 
-                        this.reSetItemHeight();
-                    }, 0);
-                    setTimeout(() => {
-                        console.log('进来updateTable: ');
-                        this.updateTable();
-                    }, 100);
+                this.reSetItemHeight();
+            }, 0);
+            setTimeout(() => {
+                console.log('进来updateTable: ');
+                this.updateTable();
+            }, 100);
         },
         reSetItemHeight() {
             let itemHeight = 0;
