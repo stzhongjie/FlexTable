@@ -597,6 +597,8 @@ export default {
                 'virtualItem'
             ); // 虚拟滚动dom
             const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
+            console.log('virtualItemArr: ', virtualItemArr, commonItemArr);
+
             if (this.isVirtualScroll) {
                 itemHeight =
                     virtualItemArr.length !== 0 &&
