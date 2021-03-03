@@ -26,7 +26,7 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 200; i++) {
     const oTestData = {
         name: 'John Brown' + `${i}`,
         age: 18,
