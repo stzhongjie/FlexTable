@@ -13,6 +13,7 @@
         @on-selection-change="onSelectionChange"
         @on-selection-cancel="onSelectionCancel"
         @on-all-cancel="onAllCancel"
+        :virtualScroll="5"
     ></flex-table>
 </div>
 </template>
@@ -21,13 +22,15 @@
 
 
 const aTestList = [];
-for(let i=0;i<2;i++){
+for(let i=0;i<200;i++){
     const oTestData = {
-        name: 'John Brown',
+        name: 'John Brown' + `${i}`,
         age: 18,
-        address: i === 1 ? 'New York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkYork No. 1 Lake ParkLake ParkYork No. 1 Lake Park' : '123',
+        address: '123',
         real_address: 'New York No. 1 Lake Park',
         date: '2016-10-03',
+        _isChecked: false,
+
     };
     aTestList.push(oTestData);
 }
@@ -46,7 +49,6 @@ export default {
                     type: 'selection',
                     width: 20,
                     align: 'center',
-                    fixed: 'left'
                 },
                 {
                     title: 'Name',

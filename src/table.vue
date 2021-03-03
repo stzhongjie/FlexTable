@@ -1,4 +1,3 @@
-
 <template>
     <div :class="wrapClasses" :style="wrapStyle" ref="tableWrap">
         <div
@@ -583,7 +582,6 @@ export default {
             this.doLayout();
             setTimeout(() => {
                 console.log('进来reSetItemHeight: ');
-
                 this.reSetItemHeight();
             }, 0);
             setTimeout(() => {
@@ -592,30 +590,13 @@ export default {
             }, 100);
         },
         reSetItemHeight() {
-            let itemHeight = 0;
-            const virtualItemArr = document.getElementsByClassName(
-                'virtualItem'
-            ); // 虚拟滚动dom
-            const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
-            console.log('virtualItemArr: ', virtualItemArr, commonItemArr);
+            // 取表格第一行的高度作为默认高度
+            const itemHeight = this.$refs.tableBody.rowHeight[0]
+            console.log('123', this.$refs.tableBody.rowHeight[0])
 
-            if (this.isVirtualScroll) {
-                itemHeight =
-                    virtualItemArr.length !== 0 &&
-                    virtualItemArr[0].clientHeight !== 0
-                        ? virtualItemArr[0].clientHeight
-                        : 37;
-            } else {
-                itemHeight =
-                    commonItemArr.length !== 0 &&
-                    commonItemArr[0].clientHeight !== 0
-                        ? commonItemArr[0].clientHeight
-                        : 37;
-            }
             this.itemHeight = itemHeight;
-            this.maxHeight = this.virtualScroll
-                ? this.virtualScroll * this.itemHeight
-                : 0;
+
+            this.maxHeight = this.isVirtualScroll ? this.virtualScroll * this.itemHeight : 0;
             this.syncScroll({
                 target: { scrollTop: itemHeight },
             });
@@ -671,7 +652,6 @@ export default {
                 }
                 return (this.dataList = newData);
             }
-
             const newIndexes = new Array(endIndex - startIndex)
                 .fill(startIndex)
                 .map((i, d) => i + d);
@@ -691,7 +671,6 @@ export default {
                 item.top = (newIndex ? newIndex : index) * itemHeight;
                 item.pos = newIndex ? newIndex++ : index++;
             });
-
             return data;
         },
         onScroll(event) {

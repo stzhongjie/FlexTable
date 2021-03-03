@@ -116,7 +116,7 @@ export default {
     },
     computed: {
         style() {
-            return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            return {'height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
         },
         expandRender() {
             let render = noop;
@@ -141,10 +141,10 @@ export default {
         },
         data(data) {
             this.updateRowList();
-            if(!data[0].top && data[0].top !== 0){
-                console.log('data: ', data);
-                this.$emit('reSetItemHeight')
-            }
+            // if(!data[0].top && data[0].top !== 0){
+            //     console.log('data: ', data);
+            //     this.$emit('reSetItemHeight')
+            // }
         }
     },
     data(){
@@ -182,7 +182,6 @@ export default {
                         rowIndex,
                         columnIndex
                     });
-
                     if (setting.rowspan > 1) {
                         const spanStart = rowIndex; // 开始位置
                         const spanEnd = rowIndex + setting.rowspan - 1; // 结束位置
@@ -191,7 +190,6 @@ export default {
                         if(!this.rowSpanColumns.includes(spanColunmKey)) {
                             this.rowSpanColumns.push(spanColunmKey);
                         }
-
                         const left = this.calRowWidth(0, columnIndex - 1);
                         const top = this.calColHeight(0, rowIndex - 1);
                         const height = this.calColHeight(spanStart, spanEnd);
@@ -255,7 +253,6 @@ export default {
         background-color: #ebf7ff;
     }
 }
-
 .commonItem{
     &:hover{
         background-color: #ebf7ff;
@@ -264,5 +261,4 @@ export default {
         border-bottom: 1px solid #EEEEEE;
     }
 }
-
 </style>

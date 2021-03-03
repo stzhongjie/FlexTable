@@ -17,7 +17,7 @@
             :minWidth="80"
             :maxWidth="600"
             @on-scroll-x="onTableScroll"
-            :virtualScroll="6"
+            :virtualScroll="5"
         ></flex-table>
         <button @click="add">按钮</button>
     </div>
@@ -26,33 +26,18 @@
 // import flexTable from '../../index.js';
 
 const aTestList = [];
-const aTestList2 = [];
 for (let i = 0; i < 2; i++) {
     const oTestData = {
-        name: 'John Brown',
+        name: 'John Brown' + `${i}`,
         age: 18,
         sex: '男',
         school: 'high school',
         color: 'red',
-        address: 'New York No. 1 Lake Park',
+        address: 'New York',
         date: '2016-10-03',
         num: i,
     };
     aTestList.push(oTestData);
-}
-
-for (let i = 0; i < 7; i++) {
-    const oTestData = {
-        name: 'John Brown',
-        age: 18,
-        sex: '男',
-        school: 'high school',
-        color: 'red',
-        address: 'New York No. 1 Lake ParkNew York No. 1 Lake ParkNew York No. 1 Lake ParkNew Y',
-        date: '2016-10-03',
-        num: i,
-    };
-    aTestList2.push(oTestData);
 }
 
 export default {
@@ -66,17 +51,14 @@ export default {
                 {
                     title: 'Name',
                     key: 'name',
-                    width: 240,
                 },
                 {
                     title: 'Number',
                     key: 'num',
-                    width: 240,
                 },
                 {
                     title: 'Age',
                     key: 'age',
-                    width: 140,
                     render(h, params) {
                         return h('span', 'age: ' + params.row.age);
                     },
@@ -84,32 +66,26 @@ export default {
                 {
                     title: 'Address',
                     key: 'address',
-                    width: 240,
                 },
                 {
                     title: 'Sex',
                     key: 'sex',
-                    width: 140,
                 },
                 {
                     title: 'School',
                     key: 'school',
-                    width: 240,
                 },
                 {
                     title: 'Color',
                     key: 'color',
-                    width: 140,
                 },
                 {
                     title: 'Date',
                     key: 'date',
-                    width: 240,
                 },
             ],
             loading: false,
             list: aTestList,
-            list2: aTestList2,
             sum: {
                 name: 'Jim Green',
                 age: 24,
@@ -125,7 +101,7 @@ export default {
         },
         add() {
             aTestList.unshift({
-                name: '666',
+                name: '666' + `   ${aTestList.length}`,
                 age: 18,
                 sex: '男',
                 school: 'high school',
