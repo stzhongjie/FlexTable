@@ -37,7 +37,6 @@
                     :scrollerStyle="scrollerStyle"
                     @scroll.native.passive="syncScroll"
                     @on-toggle-select="toggleSelect"
-
                 ></table-body>
                 <!-- /flex-table-body -->
 
@@ -342,7 +341,7 @@ export default {
             headerH: 38,
             bodyH: 0,
             footH: 54,
-            maxHeight: 0,
+            // maxHeight: 0,
             scrollTop: 0,
             scrollLeft: 0,
             bodyIsScroll: 0,
@@ -370,7 +369,7 @@ export default {
             },
             tableHeight: 0,
             // 虚拟滚动变量
-            itemHeight: 37,
+            // itemHeight: 37,
             startIndex: -1,
             prevStartIndex: -1,
             isSameDataRef: false,
@@ -435,13 +434,15 @@ export default {
             return this.data.length;
         },
         poolSize() {
+            console.log('this.maxHeight / this.itemHeight: ', this.maxHeight,this.itemHeight);
+
             return 1 + Math.ceil(this.maxHeight / this.itemHeight);
         },
         wrapperHeight() {
             return this.tableBody.$el.clientHeight;
         },
         maxIndex() {
-            return this.totalSize - this.poolSize;
+            return this.totalSize - this.poolSize < 0 ? 0 : this.totalSize - this.poolSize;
         },
         totalHeight() {
             return this.totalSize * this.itemHeight;
@@ -456,9 +457,37 @@ export default {
                 overflow: 'hidden',
             };
         },
+        itemHeight() {
+            let itemHeight = 0;
+            const virtualItemArr = document.getElementsByClassName(
+                'virtualItem'
+            ); // 虚拟滚动dom
+            const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
+            if (this.isVirtualScroll) {
+                itemHeight =
+                    virtualItemArr.length !== 0 &&
+                    virtualItemArr[0].clientHeight !== 0
+                        ? virtualItemArr[0].clientHeight
+                        : 37;
+            } else {
+                itemHeight =
+                    commonItemArr.length !== 0 &&
+                    commonItemArr[0].clientHeight !== 0
+                        ? commonItemArr[0].clientHeight
+                        : 37;
+            }
+            // 在这里修正每一项高度
+            // if (this.$refs.tableBody.rowHeight && itemHeight !== this.$refs.tableBody.rowHeight[0]) {
+            //     itemHeight = this.$refs.tableBody.rowHeight[0];
+            // }
+            return 37
+        },
+        maxHeight() {
+            return this.virtualScroll * this.itemHeight;
+        },
         isVirtualScroll() {
             // this.virtualScroll && this.virtualScroll < this.data.length;
-            return this.virtualScroll && this.virtualScroll < this.data.length;
+            return this.virtualScroll && this.virtualScroll < this.data.length;;
         },
     },
     mounted() {
@@ -557,7 +586,25 @@ export default {
             }
         },
         isVirtualScroll(val) {
+            if (this.isVirtualScroll) {
             console.log('isVirtualScroll: ');
+
+                    // setTimeout(() => {
+                    //     this.reSetItemHeight();
+                        
+                    // }, 100);
+
+                    // setTimeout(() => {
+                    //     this.updateTable();
+
+                        
+                    // }, 200);
+
+                    
+                } else {
+                    this.doLayout();
+                    this.initData();
+                }
         },
     },
     updated() {},
@@ -582,36 +629,33 @@ export default {
     },
     methods: {
         reSetItemHeight() {
-            let itemHeight = 0;
-            const virtualItemArr = document.getElementsByClassName(
-                'virtualItem'
-            ); // 虚拟滚动dom
-            const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
-            console.log('virtualItemArr: ', virtualItemArr, commonItemArr);
-            if (this.isVirtualScroll) {
-                itemHeight =
-                    virtualItemArr.length !== 0 &&
-                    virtualItemArr[0].clientHeight !== 0
-                        ? virtualItemArr[0].clientHeight
-                        : 37;
-            } else {
-                itemHeight =
-                    commonItemArr.length !== 0 &&
-                    commonItemArr[0].clientHeight !== 0
-                        ? commonItemArr[0].clientHeight
-                        : 37;
-            }
-            // 在这里修正每一项高度
-            if(itemHeight !== this.$refs.tableBody.rowHeight[0]){
-               itemHeight = this.$refs.tableBody.rowHeight[0]
-            }
-            console.log('itemHeight: ', this.$refs.tableBody.rowHeight[0]);
-            this.itemHeight = itemHeight;
-            this.maxHeight = this.virtualScroll
-                ? this.virtualScroll * this.itemHeight
-                : 0;
+            // let itemHeight = 0;
+            // const virtualItemArr = document.getElementsByClassName(
+            //     'virtualItem'
+            // ); // 虚拟滚动dom
+            // const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
+            // if (this.isVirtualScroll) {
+            //     itemHeight =
+            //         virtualItemArr.length !== 0 &&
+            //         virtualItemArr[0].clientHeight !== 0
+            //             ? virtualItemArr[0].clientHeight
+            //             : 37;
+            // } else {
+            //     itemHeight =
+            //         commonItemArr.length !== 0 &&
+            //         commonItemArr[0].clientHeight !== 0
+            //             ? commonItemArr[0].clientHeight
+            //             : 37;
+            // }
+            // // 在这里修正每一项高度
+            // if (itemHeight !== this.$refs.tableBody.rowHeight[0]) {
+            //     itemHeight = this.$refs.tableBody.rowHeight[0];
+            // }
+            // this.itemHeight = itemHeight;
+            // this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
+            // this.maxHeight = this.virtualScroll * this.itemHeight;
             this.syncScroll({
-                target: { scrollTop: itemHeight },
+                target: { scrollTop: this.itemHeight },
             });
             setTimeout(() => {
                 this.syncScroll({
@@ -633,19 +677,24 @@ export default {
                 this.$refs.tableBody.scrollTop / itemHeight
             );
             let startIndex = Math.min(maxIndex, currentIndex);
+
             // startIndex < 0 ? startIndex = 1 : startIndex
             /* 当前列表的索引发生实际变化时才进行切片触发更新 */
             const shouldUpdate = this.prevStartIndex !== startIndex;
+
             if (!shouldUpdate) return;
             /* 获取滚动方向和差值，优化滚动性能和复用DOM */
             const scrollGap = startIndex - this.prevStartIndex || 0;
             const endIndex = startIndex + poolSize;
+            console.log('endIndex: ', startIndex, poolSize); 
+
             this.genePoolModel(startIndex, endIndex, scrollGap);
             this.prevStartIndex = startIndex;
             this.requestId && cancelAnimationFrame(this.requestId);
         },
         genePoolModel(startIndex, endIndex, direction) {
             const { data, itemHeight, dataList, isSameDataRef } = this;
+
             if (!dataList.length || !isSameDataRef) {
                 // reset flag
                 this.isSameDataRef = true;
@@ -662,7 +711,9 @@ export default {
                         news['_isChecked'] = news.item['_isChecked']; // 滚动时去掉勾选
                     });
                 }
-                return (this.dataList = newData);
+                this.dataList = [];
+                this.dataList = newData
+                return;
             }
             const newIndexes = new Array(endIndex - startIndex)
                 .fill(startIndex)
@@ -818,7 +869,6 @@ export default {
                 row._isChecked = !row._isChecked;
                 // this.$set(this.data[index], '_isChecked', !this.data[index]['_isChecked'])
             }
-            console.log('index: ', this.dataList);
 
             const selection = this.getSelection();
             const curRow = JSON.parse(JSON.stringify(row));

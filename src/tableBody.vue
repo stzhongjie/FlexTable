@@ -119,7 +119,7 @@ export default {
     },
     computed: {
         style() {
-            return {'height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
         },
         expandRender() {
             let render = noop;
@@ -144,6 +144,7 @@ export default {
         },
         data(data) {
             this.updateRowList();
+
         },
     },
     data(){
