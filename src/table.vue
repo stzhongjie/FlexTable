@@ -478,9 +478,9 @@ export default {
             handler: function () {
                 if (this.isVirtualScroll) {
                     this.doLayout();
-                    // setTimeout(() => {
-                    //     this.updateTable();
-                    // }, 0);
+                    setTimeout(() => {
+                        this.updateTable();
+                    }, 0);
                     setTimeout(() => {
                         this.reSetItemHeight();
                     }, 100);
@@ -581,38 +581,30 @@ export default {
         );
     },
     methods: {
-        abc() {
-            this.doLayout();
-            setTimeout(() => {
-                console.log('进来reSetItemHeight: ');
-                this.reSetItemHeight();
-            }, 0);
-            setTimeout(() => {
-                console.log('进来updateTable: ');
-                this.updateTable();
-            }, 100);
-        },
         reSetItemHeight() {
-            // let itemHeight = 0;
-            // const virtualItemArr = document.getElementsByClassName(
-            //     'virtualItem'
-            // ); // 虚拟滚动dom
-            // const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
-            // console.log('virtualItemArr: ', virtualItemArr, commonItemArr);
-            // if (this.isVirtualScroll) {
-            //     itemHeight =
-            //         virtualItemArr.length !== 0 &&
-            //         virtualItemArr[0].clientHeight !== 0
-            //             ? virtualItemArr[0].clientHeight
-            //             : 37;
-            // } else {
-            //     itemHeight =
-            //         commonItemArr.length !== 0 &&
-            //         commonItemArr[0].clientHeight !== 0
-            //             ? commonItemArr[0].clientHeight
-            //             : 37;
-            // }
-            const itemHeight = this.$refs.tableBody.rowHeight[0] || 37
+            let itemHeight = 0;
+            const virtualItemArr = document.getElementsByClassName(
+                'virtualItem'
+            ); // 虚拟滚动dom
+            const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
+            console.log('virtualItemArr: ', virtualItemArr, commonItemArr);
+            if (this.isVirtualScroll) {
+                itemHeight =
+                    virtualItemArr.length !== 0 &&
+                    virtualItemArr[0].clientHeight !== 0
+                        ? virtualItemArr[0].clientHeight
+                        : 37;
+            } else {
+                itemHeight =
+                    commonItemArr.length !== 0 &&
+                    commonItemArr[0].clientHeight !== 0
+                        ? commonItemArr[0].clientHeight
+                        : 37;
+            }
+            // 在这里修正每一项高度
+            if(itemHeight !== this.$refs.tableBody.rowHeight[0]){
+               itemHeight = this.$refs.tableBody.rowHeight[0]
+            }
             console.log('itemHeight: ', this.$refs.tableBody.rowHeight[0]);
             this.itemHeight = itemHeight;
             this.maxHeight = this.virtualScroll
@@ -664,11 +656,10 @@ export default {
                         top: startIndex * itemHeight,
                         pos: startIndex++,
                     }));
-                console.log('itemHeight: ', startIndex, endIndex, itemHeight);
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
-                        news['_isChecked'] = false; // 滚动时去掉勾选
+                        news['_isChecked'] = news.item['_isChecked']; // 滚动时去掉勾选
                     });
                 }
                 return (this.dataList = newData);
@@ -825,7 +816,10 @@ export default {
             if (!row._isDisabled) {
                 // disabled 状态禁止更改 check 状态
                 row._isChecked = !row._isChecked;
+                // this.$set(this.data[index], '_isChecked', !this.data[index]['_isChecked'])
             }
+            console.log('index: ', this.dataList);
+
             const selection = this.getSelection();
             const curRow = JSON.parse(JSON.stringify(row));
             if (!row._isChecked) {

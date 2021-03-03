@@ -106,7 +106,7 @@ export default {
                 sex: '男',
                 school: 'high school',
                 color: 'red',
-                address: 'New York No. 1 Lake Park',
+                address: 'New York No',
                 date: '2016-10-03',
                 num: 21,
             });
