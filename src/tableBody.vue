@@ -145,7 +145,7 @@ export default {
             //     console.log('data: ', data);
             //     this.$emit('reSetItemHeight')
             // }
-        }
+        },
     },
     data(){
         return {

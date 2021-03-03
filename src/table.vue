@@ -478,11 +478,11 @@ export default {
             handler: function () {
                 if (this.isVirtualScroll) {
                     this.doLayout();
+                    // setTimeout(() => {
+                    //     this.updateTable();
+                    // }, 0);
                     setTimeout(() => {
                         this.reSetItemHeight();
-                    }, 0);
-                    setTimeout(() => {
-                        this.updateTable();
                     }, 100);
                 } else {
                     this.doLayout();
@@ -555,6 +555,12 @@ export default {
             if (flexTableFixedHead) {
                 flexTableFixedHead.scrollLeft = left;
             }
+        },
+        isVirtualScroll(val) {
+            console.log('isVirtualScroll: ');
+            setTimeout(() => {
+                        this.reSetItemHeight();
+                    }, 100);
         },
     },
     updated() {},
