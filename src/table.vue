@@ -558,10 +558,6 @@ export default {
         },
         isVirtualScroll(val) {
             console.log('isVirtualScroll: ');
-            setTimeout(() => {
-                this.reSetItemHeight();
-                this.updateTable();
-            }, 100);
         },
     },
     updated() {},
