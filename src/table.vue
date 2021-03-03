@@ -590,13 +590,31 @@ export default {
             }, 100);
         },
         reSetItemHeight() {
-            // 取表格第一行的高度作为默认高度
-            const itemHeight = this.$refs.tableBody.rowHeight[0]
-            console.log('123', this.$refs.tableBody.rowHeight[0])
-
+            // let itemHeight = 0;
+            // const virtualItemArr = document.getElementsByClassName(
+            //     'virtualItem'
+            // ); // 虚拟滚动dom
+            // const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
+            // console.log('virtualItemArr: ', virtualItemArr, commonItemArr);
+            // if (this.isVirtualScroll) {
+            //     itemHeight =
+            //         virtualItemArr.length !== 0 &&
+            //         virtualItemArr[0].clientHeight !== 0
+            //             ? virtualItemArr[0].clientHeight
+            //             : 37;
+            // } else {
+            //     itemHeight =
+            //         commonItemArr.length !== 0 &&
+            //         commonItemArr[0].clientHeight !== 0
+            //             ? commonItemArr[0].clientHeight
+            //             : 37;
+            // }
+            const itemHeight = this.$refs.tableBody.rowHeight[0] || 37
+            console.log('itemHeight: ', this.$refs.tableBody.rowHeight[0]);
             this.itemHeight = itemHeight;
-
-            this.maxHeight = this.isVirtualScroll ? this.virtualScroll * this.itemHeight : 0;
+            this.maxHeight = this.virtualScroll
+                ? this.virtualScroll * this.itemHeight
+                : 0;
             this.syncScroll({
                 target: { scrollTop: itemHeight },
             });
