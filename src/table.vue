@@ -434,15 +434,15 @@ export default {
             return this.data.length;
         },
         poolSize() {
-            console.log('this.maxHeight / this.itemHeight: ', this.maxHeight,this.itemHeight);
-
             return 1 + Math.ceil(this.maxHeight / this.itemHeight);
         },
         wrapperHeight() {
             return this.tableBody.$el.clientHeight;
         },
         maxIndex() {
-            return this.totalSize - this.poolSize < 0 ? 0 : this.totalSize - this.poolSize;
+            return this.totalSize - this.poolSize < 0
+                ? 0
+                : this.totalSize - this.poolSize;
         },
         totalHeight() {
             return this.totalSize * this.itemHeight;
@@ -480,14 +480,14 @@ export default {
             // if (this.$refs.tableBody.rowHeight && itemHeight !== this.$refs.tableBody.rowHeight[0]) {
             //     itemHeight = this.$refs.tableBody.rowHeight[0];
             // }
-            return 37
+            return 37;
         },
         maxHeight() {
             return this.virtualScroll * this.itemHeight;
         },
         isVirtualScroll() {
             // this.virtualScroll && this.virtualScroll < this.data.length;
-            return this.virtualScroll && this.virtualScroll < this.data.length;;
+            return this.virtualScroll;
         },
     },
     mounted() {
@@ -508,11 +508,11 @@ export default {
                 if (this.isVirtualScroll) {
                     this.doLayout();
                     setTimeout(() => {
-                        this.updateTable();
+                        requestAnimationFrame(() => {
+                            this.updateTable(true);
+                            this.reSetItemHeight();
+                        });
                     }, 0);
-                    setTimeout(() => {
-                        this.reSetItemHeight();
-                    }, 100);
                 } else {
                     this.doLayout();
                     this.initData();
@@ -525,9 +525,6 @@ export default {
             handler(value) {
                 if (this.isVirtualScroll) {
                     this.isSameDataRef = value === this.data;
-                    this.$nextTick(() => {
-                        this.updateTable();
-                    });
                 }
             },
             deep: true,
@@ -584,27 +581,6 @@ export default {
             if (flexTableFixedHead) {
                 flexTableFixedHead.scrollLeft = left;
             }
-        },
-        isVirtualScroll(val) {
-            if (this.isVirtualScroll) {
-            console.log('isVirtualScroll: ');
-
-                    // setTimeout(() => {
-                    //     this.reSetItemHeight();
-                        
-                    // }, 100);
-
-                    // setTimeout(() => {
-                    //     this.updateTable();
-
-                        
-                    // }, 200);
-
-                    
-                } else {
-                    this.doLayout();
-                    this.initData();
-                }
         },
     },
     updated() {},
@@ -671,7 +647,7 @@ export default {
                 }
             }
         },
-        updateTable() {
+        updateTable(isDataChange) {
             const { data, maxIndex, itemHeight, poolSize } = this;
             const currentIndex = Math.floor(
                 this.$refs.tableBody.scrollTop / itemHeight
@@ -680,13 +656,13 @@ export default {
 
             // startIndex < 0 ? startIndex = 1 : startIndex
             /* 当前列表的索引发生实际变化时才进行切片触发更新 */
-            const shouldUpdate = this.prevStartIndex !== startIndex;
+            const shouldUpdate =
+                this.prevStartIndex !== startIndex || isDataChange;
 
             if (!shouldUpdate) return;
             /* 获取滚动方向和差值，优化滚动性能和复用DOM */
             const scrollGap = startIndex - this.prevStartIndex || 0;
             const endIndex = startIndex + poolSize;
-            console.log('endIndex: ', startIndex, poolSize); 
 
             this.genePoolModel(startIndex, endIndex, scrollGap);
             this.prevStartIndex = startIndex;
@@ -694,7 +670,6 @@ export default {
         },
         genePoolModel(startIndex, endIndex, direction) {
             const { data, itemHeight, dataList, isSameDataRef } = this;
-
             if (!dataList.length || !isSameDataRef) {
                 // reset flag
                 this.isSameDataRef = true;
@@ -711,9 +686,8 @@ export default {
                         news['_isChecked'] = news.item['_isChecked']; // 滚动时去掉勾选
                     });
                 }
-                this.dataList = [];
-                this.dataList = newData
-                return;
+
+                return (this.dataList = newData);
             }
             const newIndexes = new Array(endIndex - startIndex)
                 .fill(startIndex)
@@ -1009,7 +983,7 @@ export default {
                 this.headerH = headerH;
                 this.footH = footH;
                 this.bodyH = bodyH;
-                if (!this.virtualScroll) {
+                if (!this.isVirtualScroll) {
                     this.maxHeight = this.tableHeight - headerH - footH;
                 }
             });

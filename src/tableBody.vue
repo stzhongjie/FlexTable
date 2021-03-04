@@ -135,7 +135,7 @@ export default {
             return render;
         },
         isVirtualScroll(){
-            return this.virtualScroll && this.virtualScroll < this.data.length;
+            return this.virtualScroll;
         },
     },
     watch: {

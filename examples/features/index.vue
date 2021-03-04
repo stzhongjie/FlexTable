@@ -20,6 +20,7 @@
             :virtualScroll="5"
         ></flex-table>
         <button @click="add">按钮</button>
+        <button @click="del">删除</button>
     </div>
 </template>
 <script>
@@ -110,6 +111,12 @@ export default {
                 date: '2016-10-03',
                 num: 21,
             });
+        },
+        del() {
+
+            aTestList.splice(0,1)
+            console.log('aTestList: ', aTestList);
+
         },
     },
 };
