@@ -1,5 +1,6 @@
 <template>
     <div :class="wrapClasses" :style="wrapStyle" ref="tableWrap">
+
         <div
             class="flex-table-layout"
             ref="flexTableLayout"
@@ -245,6 +246,9 @@ export default {
                 return [];
             },
         },
+        testData: {
+            type: String
+        },
         virtualScroll: {
             type: Number,
         },
@@ -370,10 +374,11 @@ export default {
             tableHeight: 0,
             // 虚拟滚动变量
             // itemHeight: 37,
-            startIndex: -1,
+            startIndex: -3,
             prevStartIndex: -1,
             isSameDataRef: false,
             requestId: null,
+            selected: [],
         };
     },
     computed: {
@@ -508,11 +513,12 @@ export default {
                 if (this.isVirtualScroll) {
                     this.doLayout();
                     setTimeout(() => {
-                        requestAnimationFrame(() => {
                             this.updateTable(true);
-                            this.reSetItemHeight();
-                        });
                     }, 0);
+                    setTimeout(() => {
+                           this.reSetItemHeight();
+                    }, 100);
+
                 } else {
                     this.doLayout();
                     this.initData();
@@ -605,39 +611,14 @@ export default {
     },
     methods: {
         reSetItemHeight() {
-            // let itemHeight = 0;
-            // const virtualItemArr = document.getElementsByClassName(
-            //     'virtualItem'
-            // ); // 虚拟滚动dom
-            // const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
-            // if (this.isVirtualScroll) {
-            //     itemHeight =
-            //         virtualItemArr.length !== 0 &&
-            //         virtualItemArr[0].clientHeight !== 0
-            //             ? virtualItemArr[0].clientHeight
-            //             : 37;
-            // } else {
-            //     itemHeight =
-            //         commonItemArr.length !== 0 &&
-            //         commonItemArr[0].clientHeight !== 0
-            //             ? commonItemArr[0].clientHeight
-            //             : 37;
-            // }
-            // // 在这里修正每一项高度
-            // if (itemHeight !== this.$refs.tableBody.rowHeight[0]) {
-            //     itemHeight = this.$refs.tableBody.rowHeight[0];
-            // }
-            // this.itemHeight = itemHeight;
-            // this.maxHeight = this.virtualScroll ? this.virtualScroll * this.itemHeight : 0;
-            // this.maxHeight = this.virtualScroll * this.itemHeight;
-            this.syncScroll({
-                target: { scrollTop: this.itemHeight },
-            });
-            setTimeout(() => {
-                this.syncScroll({
-                    target: { scrollTop: 0 },
-                });
-            }, 10);
+            // this.syncScroll({
+            //     target: { scrollTop: this.itemHeight },
+            // });
+            // setTimeout(() => {
+            //     this.syncScroll({
+            //         target: { scrollTop: 0 },
+            //     });
+            // }, 10);
             // 这里给 height 赋值是为了出现滚动条
             if (this.isVirtualScroll) {
                 if (this.height) {
@@ -654,17 +635,15 @@ export default {
             );
             let startIndex = Math.min(maxIndex, currentIndex);
 
-            // startIndex < 0 ? startIndex = 1 : startIndex
-            /* 当前列表的索引发生实际变化时才进行切片触发更新 */
-            const shouldUpdate =
-                this.prevStartIndex !== startIndex || isDataChange;
+            // 当前列表的索引发生实际变化或者源数据有增减时才进行更新
+            const shouldUpdate = (this.prevStartIndex !== startIndex || isDataChange);
 
             if (!shouldUpdate) return;
-            /* 获取滚动方向和差值，优化滚动性能和复用DOM */
-            const scrollGap = startIndex - this.prevStartIndex || 0;
+            // 获取滚动方向和差值，优化滚动性能和复用DOM
+            const direction = startIndex - this.prevStartIndex || 0;
             const endIndex = startIndex + poolSize;
 
-            this.genePoolModel(startIndex, endIndex, scrollGap);
+            this.genePoolModel(startIndex, endIndex, direction);
             this.prevStartIndex = startIndex;
             this.requestId && cancelAnimationFrame(this.requestId);
         },
@@ -673,20 +652,28 @@ export default {
             if (!dataList.length || !isSameDataRef) {
                 // reset flag
                 this.isSameDataRef = true;
+                // data.forEach((item, index) => {
+                //     if(this.selected.includes(index)){
+                //         data[index]['_isChecked'] = true;
+                //     }
+                // });
+
                 const newData = data
                     .slice(startIndex, endIndex)
-                    .map((item) => ({
+                    .map((item, index) => ({
                         item,
                         top: startIndex * itemHeight,
                         pos: startIndex++,
+                        index: startIndex,
                     }));
+                
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
-                        news['_isChecked'] = news.item['_isChecked']; // 滚动时去掉勾选
+                        news['_isChecked'] = news.item['_isChecked']
                     });
                 }
-
+                console.log('this.2',this.scrollTop)
                 return (this.dataList = newData);
             }
             const newIndexes = new Array(endIndex - startIndex)
@@ -716,7 +703,9 @@ export default {
         },
         syncScroll: throttle(function (event) {
             const { scrollTop } = event.target;
+
             this.scrollTop = scrollTop;
+
             if (this.isVirtualScroll) {
                 this.requestId = requestAnimationFrame(() => {
                     this.$nextTick(() => {
@@ -840,8 +829,16 @@ export default {
             const row = this.dataList[index];
             if (!row._isDisabled) {
                 // disabled 状态禁止更改 check 状态
-                row._isChecked = !row._isChecked;
-                // this.$set(this.data[index], '_isChecked', !this.data[index]['_isChecked'])
+                // row._isChecked = !row._isChecked;
+                const selectIndex = row.index - 1
+                // if(!this.selected.includes(selectIndex)){
+                //     this.selected.push(selectIndex)
+                // } else {
+                //     this.selected.splice(selectIndex, 1)
+                // }
+                console.log('this.',this.scrollTop)
+                this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
+
             }
 
             const selection = this.getSelection();

@@ -31,7 +31,7 @@
         <div class="flex-table-tr" v-if="data.length" :style="isVirtualScroll ? scrollerStyle : null">
             <!-- :class="`${isVirtualScroll ? 'virtualItem' : 'commonItem'}`" -->
             <div :style="`transform: translateY(${data[0].top}px)`">
-            <div v-for="(row, index) in data" :key="index" :class="`commonItem`">
+            <div v-for="(row, index) in data" :key="row.name" :class="`commonItem`">
                 <table-tr
                     :key="index"
                     :row="row"
@@ -119,7 +119,8 @@ export default {
     },
     computed: {
         style() {
-            return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            // return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
+            return {'max-height': '185px'};
         },
         expandRender() {
             let render = noop;
