@@ -821,13 +821,18 @@ export default {
         },
         toggleSelect(index) {
             const row = this.dataList[index];
+            
             if (!row._isDisabled) {
                 // disabled 状态禁止更改 check 状态
-                // row._isChecked = !row._isChecked;
-                const selectIndex = row.index - 1
-                console.log('_isChecked1: ', this.data, selectIndex, row);
+                if(this.isVirtualScroll){
+                    const selectIndex = row.index - 1
+                    this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
+                } else {
+                    row._isChecked = !row._isChecked;
+                }
+                
+                console.log('_isChecked1: ', this.data, row);
 
-                this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
             }
 
             const selection = this.getSelection();
