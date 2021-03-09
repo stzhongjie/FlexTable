@@ -1,6 +1,5 @@
 <template>
     <div :class="wrapClasses" :style="wrapStyle" ref="tableWrap">
-
         <div
             class="flex-table-layout"
             ref="flexTableLayout"
@@ -10,10 +9,12 @@
         >
             <div class="flex-table" :style="style">
                 <table-head
+                    v-bind="$props"
                     ref="tableHeader"
                     :cal-width="calWidth"
                     :columns="tableColumns"
                     :data="dataList"
+                    :allData="data"
                     :resizable="resizable"
                     @on-select-all="selectAll"
                     @on-sort-change="onSortChange"
@@ -60,10 +61,12 @@
                 :style="{ width: fixedLeftWidth + 'px' }"
             >
                 <table-head
+                    v-bind="$props"
                     :cal-width="calWidth"
                     :columns="tableColumns"
                     onlyFixed="left"
                     :data="dataList"
+                    :allData="data"
                     :resizable="resizable"
                     :rowHeight="rowHeight.header"
                     :is-render-done="isRenderDone"
@@ -105,10 +108,12 @@
             >
                 <div class="flex-table-fixed-right">
                     <table-head
+                        v-bind="$props"
                         :cal-width="calWidth"
                         :columns="tableColumns"
                         onlyFixed="right"
                         :data="dataList"
+                        :allData="data"
                         :resizable="resizable"
                         :rowHeight="rowHeight.header"
                         :is-render-done="isRenderDone"
@@ -166,10 +171,12 @@
             >
                 <div class="flex-table" :style="style">
                     <table-head
+                        v-bind="$props"
                         ref="tableHeader"
                         :cal-width="calWidth"
                         :columns="tableColumns"
                         :data="dataList"
+                        :allData="data"
                         :resizable="resizable"
                         @on-select-all="selectAll"
                         @on-sort-change="onSortChange"
@@ -186,10 +193,12 @@
                     :style="{ width: fixedLeftWidth + 'px' }"
                 >
                     <table-head
+                        v-bind="$props"
                         :cal-width="calWidth"
                         :columns="tableColumns"
                         onlyFixed="left"
                         :data="dataList"
+                        :allData="data"
                         :resizable="resizable"
                         :rowHeight="rowHeight.header"
                         :is-render-done="isRenderDone"
@@ -245,9 +254,6 @@ export default {
             default() {
                 return [];
             },
-        },
-        testData: {
-            type: String
         },
         virtualScroll: {
             type: Number,
@@ -491,8 +497,7 @@ export default {
             return this.virtualScroll * this.itemHeight;
         },
         isVirtualScroll() {
-            // this.virtualScroll && this.virtualScroll < this.data.length;
-            return this.virtualScroll;
+            return this.virtualScroll && this.virtualScroll < this.data.length;
         },
     },
     mounted() {
@@ -513,12 +518,11 @@ export default {
                 if (this.isVirtualScroll) {
                     this.doLayout();
                     setTimeout(() => {
-                            this.updateTable(true);
+                        this.updateTable(true);
                     }, 0);
                     setTimeout(() => {
-                           this.reSetItemHeight();
+                        this.reSetItemHeight();
                     }, 100);
-
                 } else {
                     this.doLayout();
                     this.initData();
@@ -636,7 +640,8 @@ export default {
             let startIndex = Math.min(maxIndex, currentIndex);
 
             // 当前列表的索引发生实际变化或者源数据有增减时才进行更新
-            const shouldUpdate = (this.prevStartIndex !== startIndex || isDataChange);
+            const shouldUpdate =
+                this.prevStartIndex !== startIndex || isDataChange;
 
             if (!shouldUpdate) return;
             // 获取滚动方向和差值，优化滚动性能和复用DOM
@@ -660,14 +665,13 @@ export default {
                         pos: startIndex++,
                         index: startIndex,
                     }));
-                
+
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
-                        news['_isChecked'] = news.item['_isChecked']
+                        news['_isChecked'] = news.item['_isChecked'];
                     });
                 }
-                console.log('this.2',this.scrollTop)
                 return (this.dataList = newData);
             }
             const newIndexes = new Array(endIndex - startIndex)
@@ -821,23 +825,20 @@ export default {
         },
         toggleSelect(index) {
             const row = this.dataList[index];
-            
             if (!row._isDisabled) {
                 // disabled 状态禁止更改 check 状态
-                if(this.isVirtualScroll){
-                    const selectIndex = row.index - 1
-                    this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
+                if (this.isVirtualScroll) {
+                    const selectIndex = row.index - 1;
+                    this.data[selectIndex]['_isChecked'] = !this.data[
+                        selectIndex
+                    ]['_isChecked'];
                 } else {
                     row._isChecked = !row._isChecked;
                 }
-                
-                console.log('_isChecked1: ', this.data, row);
-
             }
 
             const selection = this.getSelection();
             const curRow = JSON.parse(JSON.stringify(row));
-            console.log('_isChecked2: ', row);
             if (!row._isChecked) {
                 this.$emit('on-selection-cancel', curRow);
             }
@@ -854,24 +855,24 @@ export default {
         },
         selectAll(status) {
             const cancelSelection = this.getSelection();
-            this.dataList.forEach((item) => {
-                if (!item._isDisabled) {
-                    // disabled 状态禁止更改 check 状态
-                    item._isChecked = status;
-                }
-            });
             if (this.isVirtualScroll) {
-                const dataList = JSON.parse(JSON.stringify(this.dataList));
-                if (
-                    this.virtualScroll &&
-                    dataList.length > this.virtualScroll
-                ) {
-                    dataList.pop(); // 删除最后一个多余的虚拟数据
-                }
-                this.dataList = [];
-                this.dataList = Object.assign(this.dataList, dataList);
+                this.data.forEach((item) => {
+                    if (!item._isDisabled) {
+                        // disabled 状态禁止更改 check 状态
+                        item._isChecked = status;
+                    }
+                });
+            } else {
+                this.dataList.forEach((item) => {
+                    if (!item._isDisabled) {
+                        // disabled 状态禁止更改 check 状态
+                        item._isChecked = status;
+                    }
+                });
             }
             const selection = this.getSelection();
+            console.log('selection: ', selection, status);
+
             if (status) {
                 this.$emit('on-selection-change', selection);
             } else {
