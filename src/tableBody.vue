@@ -5,42 +5,42 @@
         :style="style"
         @mouseleave="mouseleave"
         >
-        <div :style="`transform: translateY(${data[0].top}px)`">
-            <div v-for="(item, index) in rowSpanList" :key="index + Math.random()">
-                <div :class="`commonItem`" :style="`height: ${rowHight}px;`">
-                    <table-tr
-                        v-bind="$props"
-                        row-span
-                        :column-index="item.columnIndex"
-                        :key="item.rowIndex"
-                        :row="item.row"
-                        :rowIndex="item.rowIndex"
-                        :columns="columns"
-                        :cal-width="calWidth"
-                        :onlyFixed="onlyFixed"
-                        :rowHeight="item.height"
-                        :hoverIndex="hoverIndex"
-                        :selectedClass="selectedClass"
-                        :spanMethod="spanMethod"
-                        @on-toggle-select="toggleSelect"
-                        @on-toggle-expand="toggleExpand"
-                    ></table-tr>
-                </div>
+        <div v-for="(item, index) in rowSpanList" :key="item.id ? item.id : index">
+            <div
+                :class="`flex-table-tr flex-table-span ${isVirtualScroll ? 'virtualItem' : 'commonItem'}`"
+                :style="[item.style, isVirtualScroll ? `transform: translateY(${item.top}px);` : '', isVirtualScroll ? `height: ${virtualHeight}px` : 'auto']">
+                <table-tr
+                    v-bind="$props"
+                    row-span
+                    :column-index="item.columnIndex"
+                    :key="item.rowIndex"
+                    :row="item.row"
+                    :rowIndex="item.rowIndex"
+                    :columns="columns"
+                    :cal-width="calWidth"
+                    :onlyFixed="onlyFixed"
+                    :rowHeight="isVirtualScroll ? virtualHeight : item.height"
+                    :hoverIndex="hoverIndex"
+                    :selectedClass="selectedClass"
+                    :spanMethod="spanMethod"
+                    @on-toggle-select="toggleSelect"
+                    @on-toggle-expand="toggleExpand"
+                ></table-tr>
             </div>
         </div>
 
         <div class="flex-table-tr" v-if="data.length" :style="isVirtualScroll ? scrollerStyle : null">
-            <div :style="`transform: translateY(${data[0].top}px)`">
-            <div v-for="(row, index) in data" :key="index + Math.random()" :class="`commonItem`" :style="`height: ${rowHight}px;`">
+            <div v-for="(row, index) in data" :key="row.id ? row.id : index" :class="`${isVirtualScroll ? 'virtualItem' : 'commonItem'}`" 
+                :style="{'transform': isVirtualScroll ? `translateY(${row.top}px)` : 0, 'height': isVirtualScroll ? `${virtualHeight}px` : 'auto'}">
                 <table-tr
                     v-bind="$props"
-                    :key="row.name"
+                    :key="index"
                     :row="row"
                     :rowIndex="index"
                     :columns="columns"
                     :cal-width="calWidth"
                     :onlyFixed="onlyFixed"
-                    :rowHeight="rowHeight[index]"
+                    :rowHeight="isVirtualScroll ? virtualHeight : rowHeight[index]"
                     :hoverIndex="hoverIndex"
                     :selectedClass="selectedClass"
                     :spanMethod="spanMethod"
@@ -54,7 +54,6 @@
                         :index="index"
                         :render="expandRender"></Expand>
                 </div>
-            </div>
             </div>
         </div>
         <div v-else>
@@ -81,7 +80,7 @@ export default {
         virtualScroll: {
             type: Number,
         },
-        rowHight: {
+        virtualHeight: {
             type: Number,
             default: 40,
         },
@@ -126,6 +125,9 @@ export default {
         style() {
             return {'max-height': this.maxHeight ? `${this.maxHeight}px` : `auto`};
         },
+        defaultHeight() {
+            return {'height': `${this.virtualHeight}px`};
+        },
         expandRender() {
             let render = noop;
             if (this.owner.$scopedSlots.expand) {
@@ -140,7 +142,7 @@ export default {
             return render;
         },
         isVirtualScroll(){
-            return this.virtualScroll && this.virtualScroll < this.data.length;
+            return !!this.virtualScroll & this.virtualScroll < this.data.length;
         },
     },
     watch: {
@@ -149,7 +151,6 @@ export default {
         },
         data(data) {
             this.updateRowList();
-
         },
     },
     data(){

@@ -34,9 +34,6 @@ export default {
     },
     mixins: [Mixin],
     props: {
-        virtualScroll: {
-            type: Number,
-        },
         className: {
             type: String | Object,
         },
@@ -46,14 +43,18 @@ export default {
         rowIndex: {
             type: Number,
         },
+        virtualScroll: {
+            type: Number,
+        },
+        virtualHeight: {
+            type: Number,
+            default: 40,
+        },
         columns: {
             type: Array,
         },
         onlyFixed: {
             type: String,
-        },
-        rowHeight: {
-            type: Number,
         },
         hoverIndex: {
             type: Number | undefined,
@@ -93,8 +94,10 @@ export default {
             return this.virtualScroll;
         },
         height() {
-            if (((this.onlyFixed || this.rowSpan) && this.rowHeight) || this.isVirtualScroll) {
-                return `${this.rowHeight}px`;
+            console.log('this.rowHeight: ', this.virtualHeight);
+
+            if (((this.onlyFixed || this.rowSpan) && this.virtualHeight) || this.isVirtualScroll) {
+                return `${this.virtualHeight}px`;
             } else {
                 return 'auto';
             }

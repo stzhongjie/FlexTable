@@ -13,8 +13,8 @@
         @on-selection-change="onSelectionChange"
         @on-selection-cancel="onSelectionCancel"
         @on-all-cancel="onAllCancel"
-        :rowHight="40"
-        :virtualScroll="5"
+        :virtualHeight="40"
+        :virtualScroll="10"
     ></flex-table>
 </div>
 </template>
@@ -23,7 +23,7 @@
 
 
 const aTestList = [];
-for(let i=0;i<200;i++){
+for(let i=0;i<2000;i++){
     const oTestData = {
         name: 'John Brown' + `${i}`,
         age: 18,
@@ -31,7 +31,7 @@ for(let i=0;i<200;i++){
         real_address: 'New York No. 1 Lake Park',
         date: '2016-10-03',
         _isChecked: false,
-
+        id: Math.random(),
     };
     aTestList.push(oTestData);
 }

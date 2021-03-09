@@ -63,6 +63,10 @@ export default {
         rowIndex: {
             type: Number
         },
+        virtualHeight: {
+            type: Number,
+            default: 40,
+        },
         onlyFixed: {
             type: String,
             default: ''

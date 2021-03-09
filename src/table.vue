@@ -257,10 +257,14 @@ export default {
         virtualScroll: {
             type: Number,
         },
-        rowHight: {
+        virtualHeight: {
             type: Number,
             default: 40,
         },
+        // rowHeight: {
+        //     type: Object,
+        //     default: () => ({}),
+        // },
         sum: {
             type: [Object, Boolean],
         },
@@ -440,6 +444,9 @@ export default {
             return 'flex-table-head-fixed-layout';
         },
         // 虚拟滚动变量
+        itemHeight() {
+            return this.virtualHeight;
+        },
         tableBody() {
             return this.$refs.tableBody;
         },
@@ -469,9 +476,6 @@ export default {
                 maxHeight: totalHeight + 'px',
                 overflow: 'hidden',
             };
-        },
-        itemHeight() {
-            return this.rowHight;
         },
         maxHeight() {
             return this.virtualScroll * this.itemHeight;
@@ -614,7 +618,6 @@ export default {
         },
         updateTable(isDataChange) {
             const { data, maxIndex, itemHeight, poolSize } = this;
-            console.log('updateTable: ', isDataChange);
 
             const currentIndex = Math.floor(
                 this.$refs.tableBody.scrollTop / itemHeight
@@ -647,7 +650,6 @@ export default {
                         pos: startIndex++,
                         index: startIndex,
                     }));
-
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
@@ -806,7 +808,6 @@ export default {
                 .catch(() => {});
         },
         toggleSelect(index) {
-            console.log('toggleSelect: ');
             const row = this.dataList[index];
             if (!row._isDisabled) {
                 // disabled 状态禁止更改 check 状态
@@ -860,7 +861,6 @@ export default {
                 });
             }
             const selection = this.getSelection();
-            console.log('selection: ', selection, status);
 
             if (status) {
                 this.$emit('on-selection-change', selection);
@@ -1087,7 +1087,10 @@ export default {
             });
         },
         onRowHeightChange(row) {
-            this.$set(this.rowHeight, row.rowIndex, row.height);
+            if(!this.isVirtualScroll){
+
+                this.$set(this.rowHeight, row.rowIndex, row.height);
+            }
         },
     },
 };
