@@ -34,6 +34,9 @@ export default {
     },
     mixins: [Mixin],
     props: {
+        virtualScroll: {
+            type: Number,
+        },
         className: {
             type: String | Object,
         },
@@ -86,8 +89,11 @@ export default {
         });
     },
     computed: {
+        isVirtualScroll(){
+            return this.virtualScroll;
+        },
         height() {
-            if ((this.onlyFixed || this.rowSpan) && this.rowHeight) {
+            if (((this.onlyFixed || this.rowSpan) && this.rowHeight) || this.isVirtualScroll) {
                 return `${this.rowHeight}px`;
             } else {
                 return 'auto';

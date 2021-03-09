@@ -257,6 +257,10 @@ export default {
         virtualScroll: {
             type: Number,
         },
+        rowHight: {
+            type: Number,
+            default: 40,
+        },
         sum: {
             type: [Object, Boolean],
         },
@@ -378,7 +382,6 @@ export default {
             },
             tableHeight: 0,
             // 虚拟滚动变量
-            // itemHeight: 37,
             startIndex: -3,
             prevStartIndex: -1,
             isSameDataRef: false,
@@ -468,29 +471,7 @@ export default {
             };
         },
         itemHeight() {
-            let itemHeight = 0;
-            const virtualItemArr = document.getElementsByClassName(
-                'virtualItem'
-            ); // 虚拟滚动dom
-            const commonItemArr = document.getElementsByClassName('commonItem'); // 普通dom
-            if (this.isVirtualScroll) {
-                itemHeight =
-                    virtualItemArr.length !== 0 &&
-                    virtualItemArr[0].clientHeight !== 0
-                        ? virtualItemArr[0].clientHeight
-                        : 37;
-            } else {
-                itemHeight =
-                    commonItemArr.length !== 0 &&
-                    commonItemArr[0].clientHeight !== 0
-                        ? commonItemArr[0].clientHeight
-                        : 37;
-            }
-            // 在这里修正每一项高度
-            // if (this.$refs.tableBody.rowHeight && itemHeight !== this.$refs.tableBody.rowHeight[0]) {
-            //     itemHeight = this.$refs.tableBody.rowHeight[0];
-            // }
-            return 37;
+            return this.rowHight;
         },
         maxHeight() {
             return this.virtualScroll * this.itemHeight;

@@ -103,7 +103,7 @@ export default {
         },
         isInvisible() { // 非固定层的固定列应不可见
             return this.column.fixed && !this.onlyFixed;
-        }
+        },
     },
     created(){
         // renderType
