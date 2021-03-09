@@ -652,12 +652,6 @@ export default {
             if (!dataList.length || !isSameDataRef) {
                 // reset flag
                 this.isSameDataRef = true;
-                // data.forEach((item, index) => {
-                //     if(this.selected.includes(index)){
-                //         data[index]['_isChecked'] = true;
-                //     }
-                // });
-
                 const newData = data
                     .slice(startIndex, endIndex)
                     .map((item, index) => ({
@@ -831,18 +825,14 @@ export default {
                 // disabled 状态禁止更改 check 状态
                 // row._isChecked = !row._isChecked;
                 const selectIndex = row.index - 1
-                // if(!this.selected.includes(selectIndex)){
-                //     this.selected.push(selectIndex)
-                // } else {
-                //     this.selected.splice(selectIndex, 1)
-                // }
-                console.log('this.',this.scrollTop)
-                this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
+                console.log('_isChecked1: ', this.data[selectIndex]);
 
+                this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
             }
 
             const selection = this.getSelection();
             const curRow = JSON.parse(JSON.stringify(row));
+            console.log('_isChecked2: ', row);
             if (!row._isChecked) {
                 this.$emit('on-selection-cancel', curRow);
             }
