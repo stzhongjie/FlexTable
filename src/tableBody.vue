@@ -5,7 +5,7 @@
         :style="style"
         @mouseleave="mouseleave"
         >
-        <div v-for="(item, index) in rowSpanList" :key="index">
+        <div v-for="(item) in rowSpanList" :key="item.rowIndex">
             <div
                 :class="`flex-table-tr flex-table-span ${isVirtualScroll ? 'virtualItem' : 'commonItem'}`"
                 :style="[item.style, isVirtualScroll ? `transform: translateY(${item.top}px)` : '']">
@@ -33,7 +33,7 @@
             <div :style="`transform: translateY(${data[0].top}px)`">
             <div v-for="(row, index) in data" :key="row.name" :class="`commonItem`">
                 <table-tr
-                    :key="index"
+                    :key="row.name"
                     :row="row"
                     :rowIndex="index"
                     :columns="columns"
