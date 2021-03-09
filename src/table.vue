@@ -825,7 +825,7 @@ export default {
                 // disabled 状态禁止更改 check 状态
                 // row._isChecked = !row._isChecked;
                 const selectIndex = row.index - 1
-                console.log('_isChecked1: ', this.data[selectIndex]);
+                console.log('_isChecked1: ', this.data, selectIndex, row);
 
                 this.data[selectIndex]['_isChecked'] = !this.data[selectIndex]['_isChecked']
             }
