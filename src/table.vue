@@ -22,7 +22,6 @@
                     :style="fixedHead ? 'visibility: hidden;' : ''"
                 ></table-head>
                 <!-- /flex-table-head -->
-
                 <table-body
                     v-bind="$props"
                     ref="tableBody"
@@ -634,6 +633,8 @@ export default {
         },
         updateTable(isDataChange) {
             const { data, maxIndex, itemHeight, poolSize } = this;
+            console.log('updateTable: ', isDataChange);
+
             const currentIndex = Math.floor(
                 this.$refs.tableBody.scrollTop / itemHeight
             );
@@ -669,7 +670,7 @@ export default {
                 for (const news of newData) {
                     Object.keys(news.item).forEach((key) => {
                         news[key] = news.item[key];
-                        news['_isChecked'] = news.item['_isChecked'];
+                        // news['_isChecked'] = news.item['_isChecked'];
                     });
                 }
                 return (this.dataList = newData);
@@ -824,6 +825,7 @@ export default {
                 .catch(() => {});
         },
         toggleSelect(index) {
+            console.log('toggleSelect: ');
             const row = this.dataList[index];
             if (!row._isDisabled) {
                 // disabled 状态禁止更改 check 状态
@@ -846,7 +848,13 @@ export default {
         },
         getSelection() {
             const selection = [];
-            this.dataList.forEach((item) => {
+            let data = [];
+            if(this.isVirtualScroll){
+                data = this.data;
+            } else {
+                data = this.dataList
+            }
+            data.forEach((item) => {
                 if (item._isChecked) {
                     selection.push(item);
                 }
