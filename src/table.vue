@@ -497,7 +497,7 @@ export default {
             return this.virtualScroll * this.itemHeight;
         },
         isVirtualScroll() {
-            return this.virtualScroll && this.virtualScroll < this.data.length;
+            return this.virtualScroll;
         },
     },
     mounted() {
