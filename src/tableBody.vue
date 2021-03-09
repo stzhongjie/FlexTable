@@ -5,7 +5,7 @@
         :style="style"
         @mouseleave="mouseleave"
         >
-        <div v-for="(item) in rowSpanList" :key="item.rowIndex">
+        <div v-for="(item, index) in rowSpanList" :key="index + Math.random()">
             <div
                 :class="`flex-table-tr flex-table-span ${isVirtualScroll ? 'virtualItem' : 'commonItem'}`"
                 :style="[item.style, isVirtualScroll ? `transform: translateY(${item.top}px)` : '']">
@@ -31,7 +31,7 @@
         <div class="flex-table-tr" v-if="data.length" :style="isVirtualScroll ? scrollerStyle : null">
             <!-- :class="`${isVirtualScroll ? 'virtualItem' : 'commonItem'}`" -->
             <div :style="`transform: translateY(${data[0].top}px)`">
-            <div v-for="(row, index) in data" :key="row.name" :class="`commonItem`">
+            <div v-for="(row, index) in data" :key="index + Math.random()" :class="`commonItem`">
                 <table-tr
                     :key="row.name"
                     :row="row"
